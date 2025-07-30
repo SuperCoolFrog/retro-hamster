@@ -13,6 +13,10 @@ type AssetSprite struct {
 	H        int
 }
 
+var (
+	Sprite_Wheel = AssetSprite{AssetKey_Wheel_PNG, 0, 0, 1080, 1080}
+)
+
 func SpriteEquals(a AssetSprite, b AssetSprite) bool {
 	return a.AssetKey == b.AssetKey &&
 		a.H == b.H &&

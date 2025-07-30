@@ -18,4 +18,20 @@ type AssetRef struct {
 	Data      []byte
 }
 
-var Assets = map[AssetKey]AssetRef{}
+const (
+	AssetKey_NONE      AssetKey = "AssetKey_NONE"
+	AssetKey_Wheel_PNG AssetKey = "AssetKey_Wheel_PNG"
+)
+
+var (
+	//go:embed wheel.png
+	m_wheel_png []byte
+)
+
+var Assets = map[AssetKey]AssetRef{
+	AssetKey_Wheel_PNG: {
+		Key:       AssetKey_Wheel_PNG,
+		AssetType: AssetType_PNG,
+		Data:      m_wheel_png,
+	},
+}
