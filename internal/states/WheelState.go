@@ -32,6 +32,7 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	// Move the origin to the center of the image before rotating
 	op.GeoM.Translate(-float64(assets.Sprite_Wheel.W)/2, -float64(assets.Sprite_Wheel.H)/2)
 	op.GeoM.Rotate(s.angle)
+	op.Filter = ebiten.FilterLinear
 	// Move it to the screen center after rotation
 	// op.GeoM.Translate(float64(s.Game.ScreenW)/2, float64(s.Game.ScreenH)/2)
 
