@@ -140,7 +140,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return 640, 480
+	return g.ScreenW, g.ScreenH
 }
 
 func (g *Game) ChangeState(state IGameState) {

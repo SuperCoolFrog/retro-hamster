@@ -14,7 +14,8 @@ type AssetSprite struct {
 }
 
 var (
-	Sprite_Wheel = AssetSprite{AssetKey_Wheel_PNG, 0, 0, 1080, 1080}
+	// Sprite_Wheel = AssetSprite{AssetKey_Wheel_PNG, 0, 0, 1100, 1100}
+	Sprite_Wheel = AssetSprite{AssetKey_Wheel_PNG, 0, 0, 1100, 1100}
 )
 
 func SpriteEquals(a AssetSprite, b AssetSprite) bool {
