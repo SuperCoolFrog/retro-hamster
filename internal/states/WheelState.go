@@ -30,7 +30,7 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	wheelPng := s.Game.ImageAssets[assets.AssetKey_Wheel_PNG]
 	op := ebiten.DrawImageOptions{}
 
-	scale := 1.5
+	scale := 2.0
 	wheelW := float64(assets.Sprite_Wheel.W) * scale
 	wheelH := float64(assets.Sprite_Wheel.H) * scale
 
