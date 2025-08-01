@@ -1,0 +1,6 @@
+package models
+
+type DIRECTION = int8
+
+const DIRECTION_LEFT DIRECTION = -1
+const DIRECTION_RIGHT DIRECTION = 1

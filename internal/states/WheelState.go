@@ -12,6 +12,13 @@ import (
 const HAMSTER_DIRECTION_RIGHT = 1
 const HAMSTER_DIRECTION_LEFT = -1
 
+var (
+	wheelScale  = 2.0
+	wheelW      = float64(assets.Sprite_Wheel.W) * wheelScale
+	wheelH      = float64(assets.Sprite_Wheel.H) * wheelScale
+	wheelRadius = 1100.0
+)
+
 type WheelState struct {
 	Game               *models.Game
 	angle              float64
@@ -19,13 +26,34 @@ type WheelState struct {
 	hamsterDirection   int
 	hamsterAnimationId int
 	animations         *models.SceneAnimations
+	Spawns             []*models.Spawn
 }
 
 func (s *WheelState) OnTransition() {
 	if s.animations == nil {
 		s.animations = models.NewSceneAnimations()
 	}
+
+	if s.Spawns == nil {
+		s.Spawns = make([]*models.Spawn, 0)
+	}
+
 	s.hamsterDirection = HAMSTER_DIRECTION_RIGHT
+	s.hamsterAnimationId = -1
+
+	snake := &models.Animation{
+		FPS:          12,
+		CurrentFrame: 0,
+		Details:      assets.AnimationSnake,
+		X:            0,
+		Y:            0,
+	}
+
+	// s.animations.AddSceneAnimation(snake)
+
+	snakeSpawn := models.NewSpawn(5, wheelRadius, snake)
+	snakeSpawn.Direction = models.DIRECTION_LEFT
+	s.Spawns = append(s.Spawns, snakeSpawn)
 }
 
 func (s *WheelState) Update() error {
@@ -54,6 +82,12 @@ func (s *WheelState) Update() error {
 
 	s.animations.Update()
 
+	for _, spawn := range s.Spawns {
+		x := float64(s.Game.ScreenW) / 2.75
+		y := float64(s.Game.ScreenH/2) + wheelH/2.1
+		spawn.Update(x, y, s.angle)
+	}
+
 	return nil
 }
 
@@ -63,12 +97,8 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	wheelPng := s.Game.ImageAssets[assets.AssetKey_Wheel_PNG]
 	op := ebiten.DrawImageOptions{}
 
-	scale := 2.0
-	wheelW := float64(assets.Sprite_Wheel.W) * scale
-	wheelH := float64(assets.Sprite_Wheel.H) * scale
-
+	op.GeoM.Scale(wheelScale, wheelScale)
 	// Move the origin to the center of the image before rotating
-	op.GeoM.Scale(scale, scale)
 	op.GeoM.Translate(-wheelW/2, -wheelH/2)
 	op.GeoM.Rotate(s.angle)
 	op.Filter = ebiten.FilterLinear
@@ -98,6 +128,10 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 		}
 	}
 	/* #endregion Animations */
+
+	for _, spawn := range s.Spawns {
+		spawn.Draw(s.Game, screen)
+	}
 }
 
 func (s *WheelState) getHamsterPosition() (x, y float64) {

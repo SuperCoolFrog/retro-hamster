@@ -16,4 +16,14 @@ var (
 			H:        256,
 		},
 	}
+	AnimationSnake = AssetAnimation{
+		TotalFrames: 6,
+		InitialSprite: AssetSprite{
+			AssetKey: AssetKey_Snake_PNG,
+			X:        0,
+			Y:        0,
+			W:        256,
+			H:        256,
+		},
+	}
 )

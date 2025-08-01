@@ -11,6 +11,8 @@ type Spawn struct {
 	SpawnAngle     float64 // initial angle on the ground (radians)
 	WheelRadius    float64 // distance from center
 	SpawnAnimation Animation
+	IsAlive        bool
+	Direction      DIRECTION
 
 	// X, Y float64
 
@@ -22,6 +24,7 @@ func NewSpawn(spawnAngle float64, wheelRadius float64, spawnAnimation *Animation
 		SpawnAngle:     spawnAngle,
 		WheelRadius:    wheelRadius,
 		SpawnAnimation: *spawnAnimation,
+		Direction:      DIRECTION_RIGHT,
 	}
 }
 
@@ -36,33 +39,26 @@ func (s *Spawn) Update(wheelCenterX, wheelCenterY, wheelAngle float64) {
 }
 
 func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
-
 	img := s.SpawnAnimation.GetCurrentFrame()
 	animSs := game.ImageAssets[img.AssetKey]
 	asset := img.AssetSprite
 
 	sub := animSs.Image.SubImage(image.Rect(asset.X, asset.Y, asset.X+asset.W, asset.Y+asset.H)).(*ebiten.Image)
 
-	// if img.AssetKey == assets.AssetKey_Hamster_Run_PNG && s.hamsterDirection == HAMSTER_DIRECTION_LEFT {
 	hOpts := ebiten.DrawImageOptions{}
-	// hOpts.GeoM.Scale(float64(s.hamsterDirection), 1)
+	if s.Direction == DIRECTION_LEFT {
+		hOpts.GeoM.Scale(float64(s.Direction), 1)
+		hOpts.GeoM.Translate(float64(sub.Bounds().Dx()), 0) // Corrects after flipping
+	}
+
 	hOpts.GeoM.Translate(-float64(sub.Bounds().Dx())/2, -float64(sub.Bounds().Dy())/2)
 	hOpts.GeoM.Rotate(s.spawnRotation)
+
 	hOpts.GeoM.Translate(float64(img.TargetX), float64(img.TargetY))
-	// scenes.DrawAssetSpriteWithOptionsWithBoundsCorrect(animSs.Image, screen, img.AssetSprite, hOpts)
-	// } else {
-	// 	scenes.DrawSprite(animSs.Image, screen, img.TargetX, img.TargetY, img.X, img.Y, img.W, img.H)
-	// }
+	hOpts.Filter = ebiten.FilterLinear
 
 	hOpts.GeoM.Translate(float64(sub.Bounds().Dx()), 0) // Corrects after flipping
 	screen.DrawImage(sub,
 		&hOpts,
 	)
-
-	// op := &ebiten.DrawImageOptions{}
-	// op.GeoM.Translate(-float64(img.Bounds().Dx())/2, -float64(img.Bounds().Dy())/2)
-	// op.GeoM.Rotate(rotation)
-	// op.GeoM.Translate(x, y)
-
-	// screen.DrawImage(img, op)
 }

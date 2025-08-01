@@ -19,10 +19,13 @@ type AssetRef struct {
 }
 
 const (
-	AssetKey_NONE            AssetKey = "AssetKey_NONE"
-	AssetKey_Wheel_PNG       AssetKey = "AssetKey_Wheel_PNG"
+	AssetKey_NONE       AssetKey = "AssetKey_NONE"
+	AssetKey_Static_PNG AssetKey = "AssetKey_Static_PNG"
+
+	AssetKey_Wheel_PNG AssetKey = "AssetKey_Wheel_PNG"
+
 	AssetKey_Hamster_Run_PNG AssetKey = "AssetKey_Hamster_Run_PNG"
-	AssetKey_Static_PNG      AssetKey = "AssetKey_Static_PNG"
+	AssetKey_Snake_PNG       AssetKey = "AssetKey_Snake_PNG"
 )
 
 var (
@@ -34,6 +37,9 @@ var (
 
 	//go:embed static.png
 	m_static_png []byte
+
+	//go:embed snake.png
+	m_snake_png []byte
 )
 
 var Assets = map[AssetKey]AssetRef{
@@ -51,5 +57,10 @@ var Assets = map[AssetKey]AssetRef{
 		Key:       AssetKey_Static_PNG,
 		AssetType: AssetType_PNG,
 		Data:      m_static_png,
+	},
+	AssetKey_Snake_PNG: {
+		Key:       AssetKey_Snake_PNG,
+		AssetType: AssetType_PNG,
+		Data:      m_snake_png,
 	},
 }
