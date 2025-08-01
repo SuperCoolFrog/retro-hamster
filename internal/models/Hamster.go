@@ -109,10 +109,6 @@ func (s *Hamster) Draw(screen *ebiten.Image) {
 	s.Momentum.Draw(screen)
 
 	s.drawHealth(screen)
-
-	// scenes.DrawAssetSprite(s.assetStaticSpriteSheet.Image, screen, 1920/2-128, 1080*3/4-128, assets.Sprite_Heart)
-	// scenes.DrawAssetSprite(s.assetStaticSpriteSheet.Image, screen, 1920/2-128/2, 1080*3/4-128, assets.Sprite_Heart)
-	// scenes.DrawAssetSprite(s.assetStaticSpriteSheet.Image, screen, 1920/2, 1080*3/4-128, assets.Sprite_Heart)
 }
 
 func (s *Hamster) drawStaticHamster(screen *ebiten.Image) {
@@ -130,7 +126,7 @@ func (s *Hamster) drawHealth(screen *ebiten.Image) {
 
 	totalW := assets.Sprite_Heart.W * s.Health
 
-	y := float64(s.Y) + s.H*1.35
+	y := float64(s.initialY) + s.H*1.35
 	startX := s.X + s.W/2 - float64(totalW)/2
 
 	for i := range s.Health {
