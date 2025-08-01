@@ -9,7 +9,6 @@ import (
 )
 
 type Hamster struct {
-	initialY     float64
 	X, Y         float64
 	W, H         float64
 	IsRunning    bool
@@ -20,8 +19,11 @@ type Hamster struct {
 	assetStaticSpriteSheet GameAssetImg
 	assetRunSpriteSheet    GameAssetImg
 
-	gravity float64
-	vY      float64
+	Momentum *MomentumBar
+
+	gravity  float64
+	vY       float64
+	initialY float64
 }
 
 func NewHamster(game *Game) *Hamster {
@@ -45,6 +47,7 @@ func NewHamster(game *Game) *Hamster {
 		IsRunning: false,
 		Direction: DIRECTION_RIGHT,
 		gravity:   1,
+		Momentum:  NewMomentumBar(game, 100, 0),
 	}
 }
 
@@ -72,6 +75,8 @@ func (s *Hamster) Update() {
 			s.vY = 0
 		}
 	}
+
+	s.Momentum.Update()
 }
 
 func (s *Hamster) Draw(screen *ebiten.Image) {
@@ -79,18 +84,19 @@ func (s *Hamster) Draw(screen *ebiten.Image) {
 
 	if !s.IsRunning || s.IsJumping {
 		s.drawStaticHamster(screen)
-		return
+	} else if s.IsRunning {
+		runFrame := s.AnimationRun.GetCurrentFrame()
+		if s.Direction == DIRECTION_LEFT {
+			hOpts := ebiten.DrawImageOptions{}
+			hOpts.GeoM.Scale(float64(s.Direction), 1)
+			hOpts.GeoM.Translate(float64(s.X), float64(s.Y))
+			scenes.DrawAssetSpriteWithOptionsWithBoundsCorrect(s.assetRunSpriteSheet.Image, screen, runFrame.AssetSprite, hOpts)
+		} else {
+			scenes.DrawSprite(s.assetRunSpriteSheet.Image, screen, runFrame.TargetX, runFrame.TargetY, runFrame.X, runFrame.Y, runFrame.W, runFrame.H)
+		}
 	}
 
-	runFrame := s.AnimationRun.GetCurrentFrame()
-	if s.Direction == DIRECTION_LEFT {
-		hOpts := ebiten.DrawImageOptions{}
-		hOpts.GeoM.Scale(float64(s.Direction), 1)
-		hOpts.GeoM.Translate(float64(s.X), float64(s.Y))
-		scenes.DrawAssetSpriteWithOptionsWithBoundsCorrect(s.assetRunSpriteSheet.Image, screen, runFrame.AssetSprite, hOpts)
-	} else {
-		scenes.DrawSprite(s.assetRunSpriteSheet.Image, screen, runFrame.TargetX, runFrame.TargetY, runFrame.X, runFrame.Y, runFrame.W, runFrame.H)
-	}
+	s.Momentum.Draw(screen)
 }
 
 func (s *Hamster) drawStaticHamster(screen *ebiten.Image) {

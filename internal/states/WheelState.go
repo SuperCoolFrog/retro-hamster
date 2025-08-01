@@ -85,6 +85,7 @@ func (s *WheelState) Update() error {
 
 		if s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
 			fmt.Printf("Collided: %d\n", time.Now().Nanosecond())
+			s.ham.Momentum.Current += 1
 		}
 	}
 
