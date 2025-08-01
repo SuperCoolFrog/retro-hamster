@@ -9,7 +9,7 @@ import (
 
 type Hamster struct {
 	X, Y         float64
-	W, H         int
+	W, H         float64
 	IsRunning    bool
 	Direction    DIRECTION
 	AnimationRun *Animation
@@ -24,8 +24,8 @@ func NewHamster(game *Game) *Hamster {
 	return &Hamster{
 		X:                      X,
 		Y:                      Y,
-		W:                      assets.AnimationHamsterRun.InitialSprite.W,
-		H:                      assets.AnimationHamsterRun.InitialSprite.H,
+		W:                      float64(assets.AnimationHamsterRun.InitialSprite.W),
+		H:                      float64(assets.AnimationHamsterRun.InitialSprite.H),
 		assetStaticSpriteSheet: game.ImageAssets[assets.AssetKey_Static_PNG],
 		assetRunSpriteSheet:    game.ImageAssets[assets.AssetKey_Hamster_Run_PNG],
 		AnimationRun: &Animation{
@@ -49,6 +49,8 @@ func (s *Hamster) Update() {
 }
 
 func (s *Hamster) Draw(screen *ebiten.Image) {
+	// DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
+
 	if !s.IsRunning {
 		s.drawStaticHamster(screen)
 		return
@@ -74,4 +76,8 @@ func (s *Hamster) drawStaticHamster(screen *ebiten.Image) {
 		hOpts.GeoM.Translate(float64(s.X), float64(s.Y))
 		scenes.DrawAssetSpriteWithOptionsWithBoundsCorrect(s.assetStaticSpriteSheet.Image, screen, assets.Sprite_Hamster, hOpts)
 	}
+}
+
+func (s *Hamster) GetCollisionRect() CollisionRect {
+	return CollisionRect{s.X, s.Y, s.W, s.H}
 }

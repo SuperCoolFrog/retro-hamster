@@ -14,7 +14,8 @@ type Spawn struct {
 	IsAlive        bool
 	Direction      DIRECTION
 
-	// X, Y float64
+	X, Y float64
+	W, H float64
 
 	spawnRotation float64
 }
@@ -25,13 +26,19 @@ func NewSpawn(spawnAngle float64, wheelRadius float64, spawnAnimation *Animation
 		WheelRadius:    wheelRadius,
 		SpawnAnimation: *spawnAnimation,
 		Direction:      DIRECTION_RIGHT,
+		W:              float64(spawnAnimation.Details.InitialSprite.W),
+		H:              float64(spawnAnimation.Details.InitialSprite.H),
 	}
 }
 
 func (s *Spawn) Update(wheelCenterX, wheelCenterY, wheelAngle float64) {
 	angle := s.SpawnAngle + wheelAngle
-	s.SpawnAnimation.X = wheelCenterX + s.WheelRadius*math.Cos(angle)
-	s.SpawnAnimation.Y = wheelCenterY + s.WheelRadius*math.Sin(angle)
+
+	s.X = wheelCenterX + s.WheelRadius*math.Cos(angle)
+	s.Y = wheelCenterY + s.WheelRadius*math.Sin(angle)
+
+	s.SpawnAnimation.X = s.X
+	s.SpawnAnimation.Y = s.Y
 
 	s.spawnRotation = s.SpawnAngle + wheelAngle + math.Pi/2
 
@@ -39,6 +46,8 @@ func (s *Spawn) Update(wheelCenterX, wheelCenterY, wheelAngle float64) {
 }
 
 func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
+	// DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
+
 	img := s.SpawnAnimation.GetCurrentFrame()
 	animSs := game.ImageAssets[img.AssetKey]
 	asset := img.AssetSprite
@@ -61,4 +70,22 @@ func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
 	screen.DrawImage(sub,
 		&hOpts,
 	)
+}
+
+func (s *Spawn) GetCollisionRect() CollisionRect {
+	if s.Direction == DIRECTION_LEFT {
+		return CollisionRect{
+			X: s.X + s.W/2,
+			Y: s.Y - s.H/2,
+			W: s.W,
+			H: s.H,
+		}
+	} else {
+		return CollisionRect{
+			X: s.X - s.W/2,
+			Y: s.Y - s.H/2,
+			W: s.W,
+			H: s.H,
+		}
+	}
 }

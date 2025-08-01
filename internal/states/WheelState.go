@@ -1,6 +1,7 @@
 package states
 
 import (
+	"fmt"
 	"math"
 	"retro-hamster/assets"
 	"retro-hamster/internal/models"
@@ -51,6 +52,7 @@ func (s *WheelState) OnTransition() {
 	snakeSpawn := models.NewSpawn(5, wheelRadius, snake)
 	snakeSpawn.Direction = models.DIRECTION_LEFT
 	s.Spawns = append(s.Spawns, snakeSpawn)
+
 }
 
 func (s *WheelState) Update() error {
@@ -74,6 +76,10 @@ func (s *WheelState) Update() error {
 		x := float64(s.Game.ScreenW) / 2.75
 		y := float64(s.Game.ScreenH/2) + wheelH/2.1
 		spawn.Update(x, y, s.angle)
+
+		if s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
+			fmt.Println("Collided")
+		}
 	}
 
 	return nil
