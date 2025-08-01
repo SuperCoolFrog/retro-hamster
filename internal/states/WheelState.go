@@ -51,6 +51,7 @@ func (s *WheelState) OnTransition() {
 
 	snakeSpawn := models.NewSpawn(5, wheelRadius, snake)
 	snakeSpawn.Direction = models.DIRECTION_LEFT
+	snakeSpawn.Power = 50
 	s.Spawns = append(s.Spawns, snakeSpawn)
 
 }
@@ -81,11 +82,22 @@ func (s *WheelState) Update() error {
 		y := float64(s.Game.ScreenH/2) + wheelH/2.1
 		spawn.Update(x, y, s.angle)
 
-		// if s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
-		// fmt.Printf("Collided: %d\n", time.Now().Nanosecond())
-		// s.ham.Momentum.Current += 1
-		// }
+		if s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
+			// damage := s.ham.Momentum.Current - spawn.Power
+			s.ham.Momentum.Current -= spawn.Power
+			spawn.IsAlive = false
+		}
 	}
+
+	// In Place Remove dead
+	writeIndex := 0
+	for _, spawn := range s.Spawns {
+		if spawn.IsAlive { // Condition: keep even numbers
+			s.Spawns[writeIndex] = spawn
+			writeIndex++
+		}
+	}
+	s.Spawns = s.Spawns[:writeIndex]
 
 	return nil
 }
