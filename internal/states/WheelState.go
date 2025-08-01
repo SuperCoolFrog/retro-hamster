@@ -6,8 +6,10 @@ import (
 	"retro-hamster/assets"
 	"retro-hamster/internal/models"
 	"retro-hamster/internal/scenes"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 // const HAMSTER_DIRECTION_RIGHT = 1
@@ -69,6 +71,10 @@ func (s *WheelState) Update() error {
 		s.ham.IsRunning = false
 	}
 
+	if inpututil.IsKeyJustPressed(ebiten.KeyW) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+		s.ham.InitJump()
+	}
+
 	s.ham.Update()
 	s.animations.Update()
 
@@ -78,7 +84,7 @@ func (s *WheelState) Update() error {
 		spawn.Update(x, y, s.angle)
 
 		if s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
-			fmt.Println("Collided")
+			fmt.Printf("Collided: %d\n", time.Now().Nanosecond())
 		}
 	}
 

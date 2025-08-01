@@ -1,6 +1,7 @@
 package models
 
 import (
+	"image/color"
 	"retro-hamster/assets"
 	"retro-hamster/internal/scenes"
 
@@ -8,14 +9,19 @@ import (
 )
 
 type Hamster struct {
+	initialY     float64
 	X, Y         float64
 	W, H         float64
 	IsRunning    bool
+	IsJumping    bool
 	Direction    DIRECTION
 	AnimationRun *Animation
 
 	assetStaticSpriteSheet GameAssetImg
 	assetRunSpriteSheet    GameAssetImg
+
+	gravity float64
+	vY      float64
 }
 
 func NewHamster(game *Game) *Hamster {
@@ -26,6 +32,7 @@ func NewHamster(game *Game) *Hamster {
 		Y:                      Y,
 		W:                      float64(assets.AnimationHamsterRun.InitialSprite.W),
 		H:                      float64(assets.AnimationHamsterRun.InitialSprite.H),
+		initialY:               Y,
 		assetStaticSpriteSheet: game.ImageAssets[assets.AssetKey_Static_PNG],
 		assetRunSpriteSheet:    game.ImageAssets[assets.AssetKey_Hamster_Run_PNG],
 		AnimationRun: &Animation{
@@ -37,6 +44,14 @@ func NewHamster(game *Game) *Hamster {
 		},
 		IsRunning: false,
 		Direction: DIRECTION_RIGHT,
+		gravity:   1,
+	}
+}
+
+func (s *Hamster) InitJump() {
+	if !s.IsJumping {
+		s.IsJumping = true
+		s.vY = -20
 	}
 }
 
@@ -46,12 +61,23 @@ func (s *Hamster) Update() {
 	} else {
 		s.AnimationRun.AdvanceFrame()
 	}
+
+	if s.IsJumping {
+		s.Y += s.vY
+		s.vY += s.gravity
+
+		if s.Y >= s.initialY {
+			s.IsJumping = false
+			s.Y = s.initialY
+			s.vY = 0
+		}
+	}
 }
 
 func (s *Hamster) Draw(screen *ebiten.Image) {
-	// DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
+	DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
 
-	if !s.IsRunning {
+	if !s.IsRunning || s.IsJumping {
 		s.drawStaticHamster(screen)
 		return
 	}
@@ -79,5 +105,9 @@ func (s *Hamster) drawStaticHamster(screen *ebiten.Image) {
 }
 
 func (s *Hamster) GetCollisionRect() CollisionRect {
+	if s.IsJumping {
+
+		return CollisionRect{s.X, s.Y, s.W, s.H / 2}
+	}
 	return CollisionRect{s.X, s.Y, s.W, s.H}
 }
