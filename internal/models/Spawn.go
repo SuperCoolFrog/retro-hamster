@@ -1,7 +1,10 @@
 package models
 
 import (
+	"image"
 	"math"
+
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type Spawn struct {
@@ -32,17 +35,34 @@ func (s *Spawn) Update(wheelCenterX, wheelCenterY, wheelAngle float64) {
 	s.SpawnAnimation.AdvanceFrame()
 }
 
-// func (obj *Spawn) Draw(screen *ebiten.Image, img *ebiten.Image, cx, cy, groundAngle float64) {
-// 	angle := obj.spawnAngle + groundAngle
-// 	x := cx + obj.radius*math.Cos(angle)
-// 	y := cy + obj.radius*math.Sin(angle)
+func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
 
-// 	rotation := angle + math.Pi/2 // Standing upright on the ground
+	img := s.SpawnAnimation.GetCurrentFrame()
+	animSs := game.ImageAssets[img.AssetKey]
+	asset := img.AssetSprite
 
-// 	op := &ebiten.DrawImageOptions{}
-// 	op.GeoM.Translate(-float64(img.Bounds().Dx())/2, -float64(img.Bounds().Dy())/2)
-// 	op.GeoM.Rotate(rotation)
-// 	op.GeoM.Translate(x, y)
+	sub := animSs.Image.SubImage(image.Rect(asset.X, asset.Y, asset.X+asset.W, asset.Y+asset.H)).(*ebiten.Image)
 
-// 	screen.DrawImage(img, op)
-// }
+	// if img.AssetKey == assets.AssetKey_Hamster_Run_PNG && s.hamsterDirection == HAMSTER_DIRECTION_LEFT {
+	hOpts := ebiten.DrawImageOptions{}
+	// hOpts.GeoM.Scale(float64(s.hamsterDirection), 1)
+	hOpts.GeoM.Translate(-float64(sub.Bounds().Dx())/2, -float64(sub.Bounds().Dy())/2)
+	hOpts.GeoM.Rotate(s.spawnRotation)
+	hOpts.GeoM.Translate(float64(img.TargetX), float64(img.TargetY))
+	// scenes.DrawAssetSpriteWithOptionsWithBoundsCorrect(animSs.Image, screen, img.AssetSprite, hOpts)
+	// } else {
+	// 	scenes.DrawSprite(animSs.Image, screen, img.TargetX, img.TargetY, img.X, img.Y, img.W, img.H)
+	// }
+
+	hOpts.GeoM.Translate(float64(sub.Bounds().Dx()), 0) // Corrects after flipping
+	screen.DrawImage(sub,
+		&hOpts,
+	)
+
+	// op := &ebiten.DrawImageOptions{}
+	// op.GeoM.Translate(-float64(img.Bounds().Dx())/2, -float64(img.Bounds().Dy())/2)
+	// op.GeoM.Rotate(rotation)
+	// op.GeoM.Translate(x, y)
+
+	// screen.DrawImage(img, op)
+}
