@@ -82,9 +82,14 @@ func (s *WheelState) Update() error {
 		y := float64(s.Game.ScreenH/2) + wheelH/2.1
 		spawn.Update(x, y, s.angle)
 
-		if s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
-			// damage := s.ham.Momentum.Current - spawn.Power
+		if spawn.IsAlive && s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
+			damage := s.ham.Momentum.Current - spawn.Power
 			s.ham.Momentum.Current -= spawn.Power
+
+			if damage < 0 {
+				s.ham.Health -= 1
+			}
+
 			spawn.IsAlive = false
 		}
 	}
