@@ -19,6 +19,7 @@ type Hamster struct {
 	assetRunSpriteSheet    GameAssetImg
 
 	Momentum *MomentumBar
+	Health   int
 
 	gravity       float64
 	vY            float64
@@ -49,6 +50,7 @@ func NewHamster(game *Game) *Hamster {
 		lastDirection: DIRECTION_RIGHT,
 		gravity:       1,
 		Momentum:      NewMomentumBar(game, 100, 0),
+		Health:        3,
 	}
 }
 
@@ -105,6 +107,10 @@ func (s *Hamster) Draw(screen *ebiten.Image) {
 	}
 
 	s.Momentum.Draw(screen)
+
+	scenes.DrawAssetSprite(s.assetStaticSpriteSheet.Image, screen, 1920/2-128, 1080*3/4-128, assets.Sprite_Heart)
+	scenes.DrawAssetSprite(s.assetStaticSpriteSheet.Image, screen, 1920/2-128/2, 1080*3/4-128, assets.Sprite_Heart)
+	scenes.DrawAssetSprite(s.assetStaticSpriteSheet.Image, screen, 1920/2, 1080*3/4-128, assets.Sprite_Heart)
 }
 
 func (s *Hamster) drawStaticHamster(screen *ebiten.Image) {
