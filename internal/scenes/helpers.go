@@ -23,9 +23,15 @@ func DrawAssetSprite(spritesheet *ebiten.Image, screen *ebiten.Image, x, y int, 
 
 // DrawSprite draws a sprite from the sprite sheet
 func DrawAssetSpriteWithOptions(spritesheet *ebiten.Image, screen *ebiten.Image, asset assets.AssetSprite, opts ebiten.DrawImageOptions) {
-	// opts.GeoM.Scale(1, .5)
-	// opts.GeoM.Translate(float64(x), float64(y))
 	screen.DrawImage(spritesheet.SubImage(image.Rect(asset.X, asset.Y, asset.X+asset.W, asset.Y+asset.H)).(*ebiten.Image),
+		&opts,
+	)
+}
+
+func DrawAssetSpriteWithOptionsWithBoundsCorrect(spritesheet *ebiten.Image, screen *ebiten.Image, asset assets.AssetSprite, opts ebiten.DrawImageOptions) {
+	sub := spritesheet.SubImage(image.Rect(asset.X, asset.Y, asset.X+asset.W, asset.Y+asset.H)).(*ebiten.Image)
+	opts.GeoM.Translate(float64(sub.Bounds().Dx()), 0) // Corrects after flipping
+	screen.DrawImage(sub,
 		&opts,
 	)
 }

@@ -13,11 +13,12 @@ const HAMSTER_DIRECTION_RIGHT = 1
 const HAMSTER_DIRECTION_LEFT = -1
 
 type WheelState struct {
-	Game             *models.Game
-	angle            float64
-	hamsterIsRunning bool
-	hamsterDirection int
-	animations       *models.SceneAnimations
+	Game               *models.Game
+	angle              float64
+	hamsterIsRunning   bool
+	hamsterDirection   int
+	hamsterAnimationId int
+	animations         *models.SceneAnimations
 }
 
 func (s *WheelState) OnTransition() {
@@ -37,7 +38,7 @@ func (s *WheelState) OnTransition() {
 		X:            s.Game.ScreenW/2 - assets.AnimationHamsterRun.InitialSprite.W/2,
 		Y:            s.Game.ScreenH/2 - int(float64(assets.AnimationHamsterRun.InitialSprite.H)/1.25), //+wheelH/2,
 	}
-	s.animations.AddSceneAnimation(hamsterAnim)
+	s.hamsterAnimationId = s.animations.AddSceneAnimation(hamsterAnim)
 }
 
 func (s *WheelState) Update() error {
@@ -85,7 +86,14 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	for i := range animationSprites {
 		img := animationSprites[i]
 		if animSs, animSsExists := s.Game.ImageAssets[img.AssetKey]; animSsExists {
-			scenes.DrawSprite(animSs.Image, screen, img.TargetX, img.TargetY, img.X, img.Y, img.W, img.H)
+			if img.AssetKey == assets.AssetKey_Hamster_Run_PNG && s.hamsterDirection == HAMSTER_DIRECTION_LEFT {
+				hOpts := ebiten.DrawImageOptions{}
+				hOpts.GeoM.Scale(float64(s.hamsterDirection), 1)
+				hOpts.GeoM.Translate(float64(img.TargetX), float64(img.TargetY))
+				scenes.DrawAssetSpriteWithOptionsWithBoundsCorrect(animSs.Image, screen, img.AssetSprite, hOpts)
+			} else {
+				scenes.DrawSprite(animSs.Image, screen, img.TargetX, img.TargetY, img.X, img.Y, img.W, img.H)
+			}
 		}
 	}
 	/* #endregion Animations */
