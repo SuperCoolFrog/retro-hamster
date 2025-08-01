@@ -20,6 +20,7 @@ var (
 	Sprite_Hamster        = AssetSprite{AssetKey_Static_PNG, 0, 0, 256, 256}
 	Sprite_Momentum_Bar_1 = AssetSprite{AssetKey_Static_PNG, 256, 0, 256, 64}
 	Sprite_Momentum_Bar_2 = AssetSprite{AssetKey_Static_PNG, 256, 64, 256, 64}
+	Sprite_Heart          = AssetSprite{AssetKey_Static_PNG, 0, 960, 64, 64}
 )
 
 func (spr AssetSprite) GetImageRect() image.Rectangle {

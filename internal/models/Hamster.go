@@ -1,7 +1,6 @@
 package models
 
 import (
-	"image/color"
 	"retro-hamster/assets"
 	"retro-hamster/internal/scenes"
 
@@ -89,7 +88,7 @@ func (s *Hamster) Update() {
 }
 
 func (s *Hamster) Draw(screen *ebiten.Image) {
-	DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
+	// DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
 
 	if !s.IsRunning || s.IsJumping {
 		s.drawStaticHamster(screen)
