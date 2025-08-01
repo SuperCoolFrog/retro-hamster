@@ -8,7 +8,7 @@ import (
 )
 
 // DrawSprite draws a sprite from the sprite sheet
-func DrawSprite(spritesheet *ebiten.Image, screen *ebiten.Image, x, y int, spriteX, spriteY, spriteWidth, spriteHeight int) {
+func DrawSprite(spritesheet *ebiten.Image, screen *ebiten.Image, x, y float64, spriteX, spriteY, spriteWidth, spriteHeight int) {
 	opts := ebiten.DrawImageOptions{}
 	opts.GeoM.Translate(float64(x), float64(y))
 	// Draw the sub-image of the sprite sheet at the desired position
@@ -17,7 +17,7 @@ func DrawSprite(spritesheet *ebiten.Image, screen *ebiten.Image, x, y int, sprit
 	)
 }
 
-func DrawAssetSprite(spritesheet *ebiten.Image, screen *ebiten.Image, x, y int, asset assets.AssetSprite) {
+func DrawAssetSprite(spritesheet *ebiten.Image, screen *ebiten.Image, x, y float64, asset assets.AssetSprite) {
 	DrawSprite(spritesheet, screen, x, y, asset.X, asset.Y, asset.W, asset.H)
 }
 

@@ -10,14 +10,14 @@ type Animation struct {
 	Details      assets.AssetAnimation
 	OnComplete   func()
 	counter      int
-	X            int
-	Y            int
+	X            float64
+	Y            float64
 }
 
 type AnimationFrame struct {
 	assets.AssetSprite
-	TargetX int
-	TargetY int
+	TargetX float64
+	TargetY float64
 }
 
 func (a *Animation) GetCurrentFrame() AnimationFrame {

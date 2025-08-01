@@ -100,9 +100,9 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	/* #endregion Animations */
 }
 
-func (s *WheelState) getHamsterPosition() (x, y int) {
-	x = s.Game.ScreenW/2 - assets.AnimationHamsterRun.InitialSprite.W/2
-	y = s.Game.ScreenH/2 - int(float64(assets.AnimationHamsterRun.InitialSprite.H)/1.25)
+func (s *WheelState) getHamsterPosition() (x, y float64) {
+	x = float64(s.Game.ScreenW/2 - assets.AnimationHamsterRun.InitialSprite.W/2)
+	y = float64(s.Game.ScreenH/2 - int(float64(assets.AnimationHamsterRun.InitialSprite.H)/1.25))
 	return x, y
 }
 
