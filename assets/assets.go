@@ -22,6 +22,7 @@ const (
 	AssetKey_NONE            AssetKey = "AssetKey_NONE"
 	AssetKey_Wheel_PNG       AssetKey = "AssetKey_Wheel_PNG"
 	AssetKey_Hamster_Run_PNG AssetKey = "AssetKey_Hamster_Run_PNG"
+	AssetKey_Static_PNG      AssetKey = "AssetKey_Static_PNG"
 )
 
 var (
@@ -30,6 +31,9 @@ var (
 
 	//go:embed hamster_run.png
 	m_hamster_run_png []byte
+
+	//go:embed static.png
+	m_static_png []byte
 )
 
 var Assets = map[AssetKey]AssetRef{
@@ -42,5 +46,10 @@ var Assets = map[AssetKey]AssetRef{
 		Key:       AssetKey_Hamster_Run_PNG,
 		AssetType: AssetType_PNG,
 		Data:      m_hamster_run_png,
+	},
+	AssetKey_Static_PNG: {
+		Key:       AssetKey_Static_PNG,
+		AssetType: AssetType_PNG,
+		Data:      m_static_png,
 	},
 }

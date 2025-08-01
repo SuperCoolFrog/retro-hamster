@@ -26,19 +26,6 @@ func (s *WheelState) OnTransition() {
 		s.animations = models.NewSceneAnimations()
 	}
 	s.hamsterDirection = HAMSTER_DIRECTION_RIGHT
-
-	// For Testing
-	// scale := 2.0
-	// wheelW := float64(assets.Sprite_Wheel.W) * scale
-	// wheelH := float64(assets.Sprite_Wheel.H) * scale
-	hamsterAnim := &models.Animation{
-		FPS:          12,
-		CurrentFrame: 0,
-		Details:      assets.AnimationHamsterRun,
-		X:            s.Game.ScreenW/2 - assets.AnimationHamsterRun.InitialSprite.W/2,
-		Y:            s.Game.ScreenH/2 - int(float64(assets.AnimationHamsterRun.InitialSprite.H)/1.25), //+wheelH/2,
-	}
-	s.hamsterAnimationId = s.animations.AddSceneAnimation(hamsterAnim)
 }
 
 func (s *WheelState) Update() error {
@@ -53,6 +40,16 @@ func (s *WheelState) Update() error {
 		s.hamsterIsRunning = true
 	} else {
 		s.hamsterIsRunning = false
+	}
+
+	if s.hamsterIsRunning {
+		if s.hamsterAnimationId == -1 {
+			s.addHamsterRunAnimation()
+		}
+	} else {
+		if s.hamsterAnimationId != -1 {
+			s.removeHamsterRunAnimation()
+		}
 	}
 
 	s.animations.Update()
@@ -81,6 +78,10 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	scenes.DrawAssetSpriteWithOptions(wheelPng.Image, screen, assets.Sprite_Wheel, op)
 	/* #endregion wheel */
 
+	if !s.hamsterIsRunning {
+		s.drawStaticHamster(screen)
+	}
+
 	/* #region Animations */
 	animationSprites := s.animations.GetAllCurrentSprites()
 	for i := range animationSprites {
@@ -97,4 +98,41 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 		}
 	}
 	/* #endregion Animations */
+}
+
+func (s *WheelState) getHamsterPosition() (x, y int) {
+	x = s.Game.ScreenW/2 - assets.AnimationHamsterRun.InitialSprite.W/2
+	y = s.Game.ScreenH/2 - int(float64(assets.AnimationHamsterRun.InitialSprite.H)/1.25)
+	return x, y
+}
+
+func (s *WheelState) drawStaticHamster(screen *ebiten.Image) {
+	x, y := s.getHamsterPosition()
+	src := s.Game.ImageAssets[assets.AssetKey_Static_PNG]
+
+	if s.hamsterDirection == HAMSTER_DIRECTION_RIGHT {
+		scenes.DrawAssetSprite(src.Image, screen, x, y, assets.Sprite_Hamster)
+	} else {
+		hOpts := ebiten.DrawImageOptions{}
+		hOpts.GeoM.Scale(float64(s.hamsterDirection), 1)
+		hOpts.GeoM.Translate(float64(x), float64(y))
+		scenes.DrawAssetSpriteWithOptionsWithBoundsCorrect(src.Image, screen, assets.Sprite_Hamster, hOpts)
+	}
+}
+
+func (s *WheelState) addHamsterRunAnimation() {
+	x, y := s.getHamsterPosition()
+	hamsterAnim := &models.Animation{
+		FPS:          12,
+		CurrentFrame: 0,
+		Details:      assets.AnimationHamsterRun,
+		X:            x,
+		Y:            y,
+	}
+	s.hamsterAnimationId = s.animations.AddSceneAnimation(hamsterAnim)
+}
+
+func (s *WheelState) removeHamsterRunAnimation() {
+	s.animations.RemoveAnimation(s.hamsterAnimationId)
+	s.hamsterAnimationId = -1
 }
