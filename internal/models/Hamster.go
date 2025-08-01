@@ -1,7 +1,6 @@
 package models
 
 import (
-	"image/color"
 	"retro-hamster/assets"
 	"retro-hamster/internal/scenes"
 
@@ -61,8 +60,10 @@ func (s *Hamster) InitJump() {
 func (s *Hamster) Update() {
 	if !s.IsRunning {
 		s.AnimationRun.CurrentFrame = 0
+		s.Momentum.Current -= 3
 	} else {
 		s.AnimationRun.AdvanceFrame()
+		s.Momentum.Current += 1
 	}
 
 	if s.IsJumping {
@@ -80,7 +81,7 @@ func (s *Hamster) Update() {
 }
 
 func (s *Hamster) Draw(screen *ebiten.Image) {
-	DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
+	// DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
 
 	if !s.IsRunning || s.IsJumping {
 		s.drawStaticHamster(screen)

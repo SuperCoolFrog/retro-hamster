@@ -1,12 +1,10 @@
 package states
 
 import (
-	"fmt"
 	"math"
 	"retro-hamster/assets"
 	"retro-hamster/internal/models"
 	"retro-hamster/internal/scenes"
-	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -83,10 +81,10 @@ func (s *WheelState) Update() error {
 		y := float64(s.Game.ScreenH/2) + wheelH/2.1
 		spawn.Update(x, y, s.angle)
 
-		if s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
-			fmt.Printf("Collided: %d\n", time.Now().Nanosecond())
-			s.ham.Momentum.Current += 1
-		}
+		// if s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
+		// fmt.Printf("Collided: %d\n", time.Now().Nanosecond())
+		// s.ham.Momentum.Current += 1
+		// }
 	}
 
 	return nil

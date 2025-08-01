@@ -2,7 +2,6 @@ package models
 
 import (
 	"image"
-	"image/color"
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -47,7 +46,7 @@ func (s *Spawn) Update(wheelCenterX, wheelCenterY, wheelAngle float64) {
 }
 
 func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
-	DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
+	// DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
 
 	img := s.SpawnAnimation.GetCurrentFrame()
 	animSs := game.ImageAssets[img.AssetKey]

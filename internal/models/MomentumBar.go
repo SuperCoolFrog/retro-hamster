@@ -36,6 +36,8 @@ func NewMomentumBar(game *Game, total, current float64) *MomentumBar {
 func (m *MomentumBar) Update() {
 	if m.Current > m.Total {
 		m.Current = m.Total
+	} else if m.Current < 0 {
+		m.Current = 0
 	}
 }
 
