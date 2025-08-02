@@ -196,6 +196,9 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	for _, spawn := range s.Spawns {
 		spawn.Draw(s.Game, screen)
 	}
+
+	src := s.Game.ImageAssets[assets.AssetKey_Static_PNG]
+	scenes.DrawAssetSprite(src.Image, screen, 0, 0, assets.Sprite_Fence)
 }
 
 func (s *WheelState) setupAllLevels() {
