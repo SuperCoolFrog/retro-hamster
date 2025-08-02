@@ -52,6 +52,16 @@ func (s *WheelState) OnTransition() {
 	snakeSpawn := models.NewSpawn(5, wheelRadius, snake)
 	snakeSpawn.Direction = models.DIRECTION_LEFT
 	snakeSpawn.Power = 50
+	snakeSpawn.OnCollision = func(hamster *models.Hamster) {
+		damage := hamster.Momentum.Current - snakeSpawn.Power
+		hamster.Momentum.Current -= snakeSpawn.Power
+
+		if damage < 0 {
+			hamster.Health -= 1
+		}
+
+		snakeSpawn.IsAlive = false
+	}
 	s.Spawns = append(s.Spawns, snakeSpawn)
 
 }
@@ -83,14 +93,7 @@ func (s *WheelState) Update() error {
 		spawn.Update(x, y, s.angle)
 
 		if spawn.IsAlive && s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
-			damage := s.ham.Momentum.Current - spawn.Power
-			s.ham.Momentum.Current -= spawn.Power
-
-			if damage < 0 {
-				s.ham.Health -= 1
-			}
-
-			spawn.IsAlive = false
+			spawn.OnCollision(s.ham)
 		}
 	}
 
@@ -146,4 +149,7 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	for _, spawn := range s.Spawns {
 		spawn.Draw(s.Game, screen)
 	}
+
+	src := s.Game.ImageAssets[assets.AssetKey_Static_PNG]
+	scenes.DrawAssetSprite(src.Image, screen, 0, 0, assets.Sprite_Seed)
 }

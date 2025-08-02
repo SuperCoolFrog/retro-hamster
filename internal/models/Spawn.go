@@ -13,6 +13,7 @@ type Spawn struct {
 	SpawnAnimation Animation
 	IsAlive        bool
 	Direction      DIRECTION
+	OnCollision    func(ham *Hamster)
 
 	X, Y float64
 	W, H float64
@@ -31,6 +32,7 @@ func NewSpawn(spawnAngle float64, wheelRadius float64, spawnAnimation *Animation
 		W:              float64(spawnAnimation.Details.InitialSprite.W),
 		H:              float64(spawnAnimation.Details.InitialSprite.H),
 		IsAlive:        true,
+		OnCollision:    func(ham *Hamster) {},
 	}
 }
 
