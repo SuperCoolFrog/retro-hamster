@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"retro-hamster/assets"
+	"time"
 )
 
 type Level struct {
@@ -54,6 +55,36 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 			ham.Momentum.Current = 0
 		}
 		return blockSpawn
+	},
+	"|": func(index int) *Spawn {
+		mod := float64(assets.AnimationFence.InitialSprite.W / 4)
+		wheelRadiusModified := WHEEL_RADIUS + mod
+		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
+		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
+		fence := NewSpawn(angle, wheelRadiusModified, &Animation{
+			FPS:          0,
+			CurrentFrame: 0,
+			Details:      assets.AnimationFence,
+		})
+		fence.Power = 1
+		fence.IsObstacle = true
+		fence.LastActivation = time.Now().Add(-time.Minute)
+		fence.ActivationCoolDown = time.Second
+		fence.OnCollision = func(ham *Hamster) {
+			if ham.X < fence.X {
+				ham.Blocked = DIRECTION_RIGHT
+			} else {
+				ham.Blocked = DIRECTION_LEFT
+			}
+
+			ham.Momentum.Current = 0
+
+			if time.Since(fence.LastActivation) > fence.ActivationCoolDown {
+				ham.Health -= int(fence.Power)
+				fence.LastActivation = time.Now()
+			}
+		}
+		return fence
 	},
 
 	/* ENEMIES */

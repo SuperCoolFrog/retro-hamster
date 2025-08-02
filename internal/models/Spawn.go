@@ -3,6 +3,7 @@ package models
 import (
 	"image"
 	"math"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -15,6 +16,9 @@ type Spawn struct {
 	IsObstacle     bool
 	Direction      DIRECTION
 	OnCollision    func(ham *Hamster)
+
+	LastActivation     time.Time
+	ActivationCoolDown time.Duration
 
 	X, Y float64
 	W, H float64
