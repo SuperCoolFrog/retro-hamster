@@ -6,6 +6,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type CollisionRect struct {
@@ -53,6 +54,15 @@ func (r CollisionRect) IntersectsPolygon(other [4]Vector) bool {
 func DrawCollisionRect(screen *ebiten.Image, r CollisionRect, col color.Color) {
 	screen.Set(int(r.X), int(r.Y), col)
 	ebitenutil.DrawRect(screen, r.X, r.Y, r.W, r.H, col)
+}
+
+func DrawHitBox(screen *ebiten.Image, hitbox [4]Vector) {
+	for i := 0; i < 4; i++ {
+		a := hitbox[i]
+		b := hitbox[(i+1)%4]
+		// ebitenutil.DrawLine(screen, a.X, a.Y, b.X, b.Y, color.RGBA{255, 0, 0, 255})
+		vector.StrokeLine(screen, float32(a.X), float32(a.Y), float32(b.X), float32(b.Y), 2, color.RGBA{255, 0, 0, 255}, true)
+	}
 }
 
 // Get perpendicular axes from polygon edges

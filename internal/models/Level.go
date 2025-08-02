@@ -43,6 +43,7 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 			Details:      assets.AnimationBlock,
 		})
 		blockSpawn.Power = 1
+		blockSpawn.IsObstacle = true
 		blockSpawn.OnCollision = func(ham *Hamster) {
 			if ham.X < blockSpawn.X {
 				ham.Blocked = DIRECTION_RIGHT
