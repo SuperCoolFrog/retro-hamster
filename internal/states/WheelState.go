@@ -100,12 +100,12 @@ func (s *WheelState) Update() error {
 
 	if ebiten.IsKeyPressed(ebiten.KeyA) {
 		// s.angle += 2 * math.Pi / 180
-		s.angle += 1 * math.Pi / 180
+		s.angle += .75 * math.Pi / 180
 		s.ham.Direction = models.DIRECTION_LEFT
 		s.ham.IsRunning = true
 	} else if ebiten.IsKeyPressed(ebiten.KeyD) {
 		// s.angle -= 2 * math.Pi / 180
-		s.angle -= 1 * math.Pi / 180
+		s.angle -= .75 * math.Pi / 180
 		s.ham.Direction = models.DIRECTION_RIGHT
 		s.ham.IsRunning = true
 	} else {
@@ -115,6 +115,8 @@ func (s *WheelState) Update() error {
 	if inpututil.IsKeyJustPressed(ebiten.KeyW) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
 		s.ham.InitJump()
 	}
+
+	s.checkLevel()
 
 	s.ham.Update()
 	s.animations.Update()
@@ -138,8 +140,6 @@ func (s *WheelState) Update() error {
 		}
 	}
 	s.Spawns = s.Spawns[:writeIndex]
-
-	s.checkLevel()
 
 	return nil
 }

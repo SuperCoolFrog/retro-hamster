@@ -34,4 +34,33 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		}
 		return seed
 	},
+	"S": func(index int) *Spawn {
+		mod := float64(assets.AnimationSnake.InitialSprite.W / 4)
+		wheelRadiusModified := WHEEL_RADIUS + mod
+		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
+		angle -= math.Pi / 2 /* THis will translate to top as starting point */
+		// angle := float64(i) * 2 * math.Pi / 5
+		snake := NewSpawn(angle, wheelRadiusModified, &Animation{
+			FPS:          12,
+			CurrentFrame: 0,
+			Details:      assets.AnimationSnake,
+			X:            0,
+			Y:            0,
+		})
+		snake.Direction = DIRECTION_LEFT
+		snake.Power = 50
+		snake.OnCollision = func(ham *Hamster) {
+			damage := ham.Momentum.Current - snake.Power
+			ham.Momentum.Current -= snake.Power
+
+			if damage < 0 {
+				ham.Health -= 1
+			}
+
+			snake.IsAlive = false
+
+			fmt.Printf("M %d\n", ham.Momentum.Current)
+		}
+		return snake
+	},
 }
