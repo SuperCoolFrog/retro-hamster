@@ -26,4 +26,14 @@ var (
 			H:        256,
 		},
 	}
+	AnimationSeed = AssetAnimation{
+		TotalFrames: 1,
+		InitialSprite: AssetSprite{
+			AssetKey: AssetKey_Static_PNG,
+			X:        Sprite_Seed.X,
+			Y:        Sprite_Seed.Y,
+			W:        Sprite_Seed.W,
+			H:        Sprite_Seed.H,
+		},
+	}
 )

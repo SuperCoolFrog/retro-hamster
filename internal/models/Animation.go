@@ -39,6 +39,11 @@ func (a *Animation) getSkipCount() int {
 }
 
 func (a *Animation) AdvanceFrame() {
+
+	if a.FPS == 0 {
+		return
+	}
+
 	a.counter++
 	if a.counter < a.getSkipCount() {
 		return

@@ -66,6 +66,7 @@ func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
 	}
 
 	hOpts.GeoM.Translate(-float64(sub.Bounds().Dx())/2, -float64(sub.Bounds().Dy())/2)
+	// hOpts.GeoM.Translate(-float64(s.W)/2, -float64(s.H)/2)
 	hOpts.GeoM.Rotate(s.spawnRotation)
 
 	hOpts.GeoM.Translate(float64(img.TargetX), float64(img.TargetY))

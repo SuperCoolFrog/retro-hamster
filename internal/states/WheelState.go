@@ -47,9 +47,7 @@ func (s *WheelState) OnTransition() {
 		Y:            0,
 	}
 
-	// s.animations.AddSceneAnimation(snake)
-
-	snakeSpawn := models.NewSpawn(5, wheelRadius, snake)
+	snakeSpawn := models.NewSpawn(5, wheelRadius+float64(assets.AnimationSnake.InitialSprite.W)/4, snake)
 	snakeSpawn.Direction = models.DIRECTION_LEFT
 	snakeSpawn.Power = 50
 	snakeSpawn.OnCollision = func(hamster *models.Hamster) {
@@ -63,6 +61,25 @@ func (s *WheelState) OnTransition() {
 		snakeSpawn.IsAlive = false
 	}
 	s.Spawns = append(s.Spawns, snakeSpawn)
+
+	mod := float64(assets.AnimationSeed.InitialSprite.W / 4)
+	wheelRadiusModified := wheelRadius - mod
+	space := 512.0
+	for i := range 5 {
+		angle := float64(i) * space / (wheelRadiusModified)
+		// angle := float64(i) * 2 * math.Pi / 5
+		seed := models.NewSpawn(angle, wheelRadiusModified, &models.Animation{
+			FPS:          0,
+			CurrentFrame: 0,
+			Details:      assets.AnimationSeed,
+		})
+		seed.Power = 5
+		seed.OnCollision = func(ham *models.Hamster) {
+			s.ham.XP.Current += seed.Power
+			seed.IsAlive = false
+		}
+		s.Spawns = append(s.Spawns, seed)
+	}
 
 }
 
@@ -88,8 +105,8 @@ func (s *WheelState) Update() error {
 	s.animations.Update()
 
 	for _, spawn := range s.Spawns {
-		x := float64(s.Game.ScreenW) / 2.75
-		y := float64(s.Game.ScreenH/2) + wheelH/2.1
+		x := (float64(s.Game.ScreenW) / 2) - spawn.W
+		y := float64(s.Game.ScreenH/2) + wheelH/2
 		spawn.Update(x, y, s.angle)
 
 		if spawn.IsAlive && s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
