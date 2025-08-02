@@ -60,13 +60,14 @@ func (s *WheelState) OnTransition() {
 
 		snakeSpawn.IsAlive = false
 	}
-	s.Spawns = append(s.Spawns, snakeSpawn)
+	// s.Spawns = append(s.Spawns, snakeSpawn)
 
 	mod := float64(assets.AnimationSeed.InitialSprite.W / 4)
 	wheelRadiusModified := wheelRadius - mod
 	space := 512.0
 	for i := range 5 {
 		angle := float64(i) * space / (wheelRadiusModified)
+		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
 		// angle := float64(i) * 2 * math.Pi / 5
 		seed := models.NewSpawn(angle, wheelRadiusModified, &models.Animation{
 			FPS:          0,
