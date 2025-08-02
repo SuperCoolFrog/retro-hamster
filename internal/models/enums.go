@@ -4,6 +4,7 @@ import "retro-hamster/assets"
 
 type DIRECTION = int8
 
+const DIRECTION_NONE DIRECTION = 0
 const DIRECTION_LEFT DIRECTION = -1
 const DIRECTION_RIGHT DIRECTION = 1
 

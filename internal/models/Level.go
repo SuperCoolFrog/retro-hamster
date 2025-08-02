@@ -32,6 +32,30 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		}
 		return seed
 	},
+	"m": func(index int) *Spawn {
+		mod := float64(assets.AnimationBlock.InitialSprite.W / 5)
+		wheelRadiusModified := WHEEL_RADIUS + mod
+		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
+		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
+		blockSpawn := NewSpawn(angle, wheelRadiusModified, &Animation{
+			FPS:          0,
+			CurrentFrame: 0,
+			Details:      assets.AnimationBlock,
+		})
+		blockSpawn.Power = 1
+		blockSpawn.OnCollision = func(ham *Hamster) {
+			if ham.X < blockSpawn.X {
+				ham.Blocked = DIRECTION_RIGHT
+			} else {
+				ham.Blocked = DIRECTION_LEFT
+			}
+
+			ham.Momentum.Current = 0
+		}
+		return blockSpawn
+	},
+
+	/* ENEMIES */
 	"S": func(index int) *Spawn {
 		mod := float64(assets.AnimationSnake.InitialSprite.W / 4)
 		wheelRadiusModified := WHEEL_RADIUS + mod

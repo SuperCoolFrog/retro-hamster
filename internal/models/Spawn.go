@@ -2,9 +2,11 @@ package models
 
 import (
 	"image"
+	"image/color"
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type Spawn struct {
@@ -57,6 +59,7 @@ func (s *Spawn) Update(wheelCenterX, wheelCenterY, wheelAngle float64) {
 
 func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
 	// DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
+	s.drawHitBox(screen)
 
 	img := s.SpawnAnimation.GetCurrentFrame()
 	animSs := game.ImageAssets[img.AssetKey]
@@ -83,20 +86,54 @@ func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
 	)
 }
 
-func (s *Spawn) GetCollisionRect() CollisionRect {
-	if s.Direction == DIRECTION_LEFT {
-		return CollisionRect{
-			X: s.X + s.W/2,
-			Y: s.Y - s.H/2,
-			W: s.W,
-			H: s.H,
-		}
-	} else {
-		return CollisionRect{
-			X: s.X - s.W/2,
-			Y: s.Y - s.H/2,
-			W: s.W,
-			H: s.H,
-		}
+func (s *Spawn) GetHitBox() [4]Vector {
+	hw := s.W / 2
+	hh := s.H / 2
+
+	// Corner positions relative to center
+	corners := [4]Vector{
+		{-hw, -hh}, // top-left
+		{+hw, -hh}, // top-right
+		{+hw, +hh}, // bottom-right
+		{-hw, +hh}, // bottom-left
+	}
+
+	sin, cos := math.Sin(s.spawnRotation), math.Cos(s.spawnRotation)
+	for i := range corners {
+		cx := corners[i].X + s.W
+		cy := corners[i].Y
+		corners[i].X = s.X + cx*cos - cy*sin
+		corners[i].Y = s.Y + cx*sin + cy*cos
+	}
+
+	return corners
+}
+
+func (s *Spawn) drawHitBox(screen *ebiten.Image) {
+	hitbox := s.GetHitBox()
+
+	for i := 0; i < 4; i++ {
+		a := hitbox[i]
+		b := hitbox[(i+1)%4]
+		// ebitenutil.DrawLine(screen, a.X, a.Y, b.X, b.Y, color.RGBA{255, 0, 0, 255})
+		vector.StrokeLine(screen, float32(a.X), float32(a.Y), float32(b.X), float32(b.Y), 2, color.RGBA{255, 0, 0, 255}, true)
 	}
 }
+
+// func (s *Spawn) GetCollisionRect() CollisionRect {
+// 	if s.Direction == DIRECTION_LEFT {
+// 		return CollisionRect{
+// 			X: s.X + s.W/2,
+// 			Y: s.Y - s.H/2,
+// 			W: s.W,
+// 			H: s.H,
+// 		}
+// 	} else {
+// 		return CollisionRect{
+// 			X: s.X - s.W/2,
+// 			Y: s.Y - s.H/2,
+// 			W: s.W,
+// 			H: s.H,
+// 		}
+// 	}
+// }

@@ -36,4 +36,24 @@ var (
 			H:        Sprite_Seed.H,
 		},
 	}
+	AnimationBlock = AssetAnimation{
+		TotalFrames: 1,
+		InitialSprite: AssetSprite{
+			AssetKey: AssetKey_Static_PNG,
+			X:        Sprite_Block.X,
+			Y:        Sprite_Block.Y,
+			W:        Sprite_Block.W,
+			H:        Sprite_Block.H,
+		},
+	}
+	AnimationFence = AssetAnimation{
+		TotalFrames: 1,
+		InitialSprite: AssetSprite{
+			AssetKey: AssetKey_Static_PNG,
+			X:        Sprite_Fence.X,
+			Y:        Sprite_Fence.Y,
+			W:        Sprite_Fence.W,
+			H:        Sprite_Fence.H,
+		},
+	}
 )

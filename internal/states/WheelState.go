@@ -98,16 +98,18 @@ func (s *WheelState) OnTransition() {
 
 func (s *WheelState) Update() error {
 
-	if ebiten.IsKeyPressed(ebiten.KeyA) {
+	if ebiten.IsKeyPressed(ebiten.KeyA) && s.ham.Blocked != models.DIRECTION_LEFT {
 		// s.angle += 2 * math.Pi / 180
 		s.angle += .75 * math.Pi / 180
 		s.ham.Direction = models.DIRECTION_LEFT
 		s.ham.IsRunning = true
-	} else if ebiten.IsKeyPressed(ebiten.KeyD) {
+		s.ham.Blocked = models.DIRECTION_NONE
+	} else if ebiten.IsKeyPressed(ebiten.KeyD) && s.ham.Blocked != models.DIRECTION_RIGHT {
 		// s.angle -= 2 * math.Pi / 180
 		s.angle -= .75 * math.Pi / 180
 		s.ham.Direction = models.DIRECTION_RIGHT
 		s.ham.IsRunning = true
+		s.ham.Blocked = models.DIRECTION_NONE
 	} else {
 		s.ham.IsRunning = false
 	}
@@ -151,7 +153,7 @@ func (s *WheelState) updateSpawns(spawns []*models.Spawn) {
 		y := float64(s.Game.ScreenH/2) + wheelH/2
 		spawn.Update(x, y, s.angle)
 
-		if spawn.IsAlive && s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
+		if spawn.IsAlive && s.ham.GetCollisionRect().IntersectsPolygon(spawn.GetHitBox()) {
 			spawn.OnCollision(s.ham)
 		}
 	}
@@ -196,9 +198,6 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	for _, spawn := range s.Spawns {
 		spawn.Draw(s.Game, screen)
 	}
-
-	src := s.Game.ImageAssets[assets.AssetKey_Static_PNG]
-	scenes.DrawAssetSprite(src.Image, screen, 0, 0, assets.Sprite_Fence)
 }
 
 func (s *WheelState) setupAllLevels() {
