@@ -1,6 +1,7 @@
 package models
 
 import (
+	"math"
 	"retro-hamster/assets"
 	"retro-hamster/internal/scenes"
 
@@ -8,10 +9,13 @@ import (
 )
 
 type Hamster struct {
-	X, Y         float64
-	W, H         float64
-	IsRunning    bool
-	IsJumping    bool
+	X, Y          float64
+	W, H          float64
+	IsRunning     bool
+	IsJumping     bool
+	OriginalAngle float64
+	LogicalAngle  float64
+
 	Direction    DIRECTION
 	AnimationRun *Animation
 
@@ -37,6 +41,8 @@ func NewHamster(game *Game) *Hamster {
 		W:                      float64(assets.AnimationHamsterRun.InitialSprite.W),
 		H:                      float64(assets.AnimationHamsterRun.InitialSprite.H),
 		initialY:               Y,
+		OriginalAngle:          math.Pi / 2,
+		LogicalAngle:           math.Pi / 2,
 		assetStaticSpriteSheet: game.ImageAssets[assets.AssetKey_Static_PNG],
 		assetRunSpriteSheet:    game.ImageAssets[assets.AssetKey_Hamster_Run_PNG],
 		AnimationRun: &Animation{
@@ -63,7 +69,9 @@ func (s *Hamster) InitJump() {
 	}
 }
 
-func (s *Hamster) Update() {
+func (s *Hamster) Update(wheelAngle float64) {
+	s.LogicalAngle = s.OriginalAngle + wheelAngle
+
 	if s.lastDirection != s.Direction {
 		s.Momentum.Current = 0
 		s.lastDirection = s.Direction

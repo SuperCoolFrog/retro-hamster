@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"math"
 	"retro-hamster/assets"
 )
 
@@ -19,8 +18,7 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		mod := float64(assets.AnimationSeed.InitialSprite.W / 4)
 		wheelRadiusModified := WHEEL_RADIUS - mod
 		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
-		angle -= math.Pi / 2 /* THis will translate to top as starting point */
-		// angle := float64(i) * 2 * math.Pi / 5
+		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
 		seed := NewSpawn(angle, wheelRadiusModified, &Animation{
 			FPS:          0,
 			CurrentFrame: 0,
@@ -38,8 +36,7 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		mod := float64(assets.AnimationSnake.InitialSprite.W / 4)
 		wheelRadiusModified := WHEEL_RADIUS + mod
 		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
-		angle -= math.Pi / 2 /* THis will translate to top as starting point */
-		// angle := float64(i) * 2 * math.Pi / 5
+		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
 		snake := NewSpawn(angle, wheelRadiusModified, &Animation{
 			FPS:          12,
 			CurrentFrame: 0,

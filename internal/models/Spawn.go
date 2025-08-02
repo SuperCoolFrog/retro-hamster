@@ -37,6 +37,10 @@ func NewSpawn(spawnAngle float64, wheelRadius float64, spawnAnimation *Animation
 	}
 }
 
+func (s *Spawn) SetHamsterRelativeOffset(angle float64) {
+	s.SpawnAngle = s.SpawnAngle - angle
+}
+
 func (s *Spawn) Update(wheelCenterX, wheelCenterY, wheelAngle float64) {
 	angle := s.SpawnAngle + wheelAngle
 

@@ -118,18 +118,19 @@ func (s *WheelState) Update() error {
 
 	s.checkLevel()
 
-	s.ham.Update()
+	s.ham.Update(s.angle)
 	s.animations.Update()
+	s.updateSpawns(s.Spawns)
 
-	for _, spawn := range s.Spawns {
-		x := (float64(s.Game.ScreenW) / 2) - spawn.W
-		y := float64(s.Game.ScreenH/2) + wheelH/2
-		spawn.Update(x, y, s.angle)
+	// for _, spawn := range s.Spawns {
+	// 	x := (float64(s.Game.ScreenW) / 2) - spawn.W
+	// 	y := float64(s.Game.ScreenH/2) + wheelH/2
+	// 	spawn.Update(x, y, s.angle)
 
-		if spawn.IsAlive && s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
-			spawn.OnCollision(s.ham)
-		}
-	}
+	// 	if spawn.IsAlive && s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
+	// 		spawn.OnCollision(s.ham)
+	// 	}
+	// }
 
 	// In Place Remove dead
 	writeIndex := 0
@@ -142,6 +143,18 @@ func (s *WheelState) Update() error {
 	s.Spawns = s.Spawns[:writeIndex]
 
 	return nil
+}
+
+func (s *WheelState) updateSpawns(spawns []*models.Spawn) {
+	for _, spawn := range spawns {
+		x := (float64(s.Game.ScreenW) / 2) - spawn.W
+		y := float64(s.Game.ScreenH/2) + wheelH/2
+		spawn.Update(x, y, s.angle)
+
+		if spawn.IsAlive && s.ham.GetCollisionRect().Intersects(spawn.GetCollisionRect()) {
+			spawn.OnCollision(s.ham)
+		}
+	}
 }
 
 func (s *WheelState) Draw(screen *ebiten.Image) {
@@ -233,6 +246,13 @@ func (s *WheelState) checkLevel() {
 func (s *WheelState) loadLevel(levelIdx, roundIdx int) {
 	level := s.Levels[levelIdx]
 	roundSpawns := level.Rounds[roundIdx]
+
+	s.updateSpawns(roundSpawns)
+
+	for _, spawn := range roundSpawns {
+		spawn.SetHamsterRelativeOffset(s.ham.LogicalAngle)
+	}
+
 	s.Spawns = roundSpawns
 	s.CurrentLevel = levelIdx
 	s.CurrentRound = roundIdx
