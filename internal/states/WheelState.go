@@ -206,7 +206,7 @@ func (s *WheelState) setupAllLevels() {
 			spawns := make([]*models.Spawn, 0)
 
 			for idx, spawnSymbol := range round {
-				if string(spawnSymbol) != " " {
+				if string(spawnSymbol) != " " && string(spawnSymbol) != "_" {
 					spawns = append(spawns, models.SymbolToSpawnMap[string(spawnSymbol)](idx))
 				}
 			}

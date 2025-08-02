@@ -13,4 +13,4 @@ const WHEEL_RADIUS = 1100.0
 var WHEEL_WIDTH = float64(assets.Sprite_Wheel.W) * WHEEL_SCALE
 var WHEEL_HEIGHT = float64(assets.Sprite_Wheel.H) * WHEEL_SCALE
 
-const SPAWN_SPACING = 512.0
+const SPAWN_SPACING = 256.0
