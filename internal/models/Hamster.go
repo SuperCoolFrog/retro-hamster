@@ -19,6 +19,7 @@ type Hamster struct {
 	assetRunSpriteSheet    GameAssetImg
 
 	Momentum *MomentumBar
+	XP       *XPBar
 	Health   int
 
 	gravity       float64
@@ -50,6 +51,7 @@ func NewHamster(game *Game) *Hamster {
 		lastDirection: DIRECTION_RIGHT,
 		gravity:       1,
 		Momentum:      NewMomentumBar(game, 100, 0),
+		XP:            NewXP(game, 100, 10),
 		Health:        3,
 	}
 }
@@ -87,6 +89,7 @@ func (s *Hamster) Update() {
 	}
 
 	s.Momentum.Update()
+	s.XP.Update()
 }
 
 func (s *Hamster) Draw(screen *ebiten.Image) {
@@ -107,6 +110,7 @@ func (s *Hamster) Draw(screen *ebiten.Image) {
 	}
 
 	s.Momentum.Draw(screen)
+	s.XP.Draw(screen)
 
 	s.drawHealth(screen)
 }
