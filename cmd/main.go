@@ -23,7 +23,9 @@ func main() {
 
 	// game.ChangeState(&states.PlaceholderState{})
 	game.ChangeState(&states.WheelState{
-		Game: game,
+		Game:         game,
+		CurrentLevel: -1,
+		CurrentRound: -1,
 	})
 
 	if err := ebiten.RunGame(game); err != nil {

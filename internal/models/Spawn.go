@@ -12,6 +12,7 @@ type Spawn struct {
 	WheelRadius    float64 // distance from center
 	SpawnAnimation Animation
 	IsAlive        bool
+	IsObstacle     bool
 	Direction      DIRECTION
 	OnCollision    func(ham *Hamster)
 

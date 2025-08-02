@@ -51,7 +51,7 @@ func NewHamster(game *Game) *Hamster {
 		lastDirection: DIRECTION_RIGHT,
 		gravity:       1,
 		Momentum:      NewMomentumBar(game, 100, 0),
-		XP:            NewXP(game, 100, 10),
+		XP:            NewXP(game, 100, 0),
 		Health:        3,
 	}
 }
