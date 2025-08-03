@@ -22,6 +22,7 @@ type Spawn struct {
 	Health         float64
 	SkewAngle      float64
 	Init           func()
+	OtherUpdate    func()
 
 	LastActivation     time.Time
 	ActivationCoolDown time.Duration
@@ -47,6 +48,7 @@ func NewSpawn(spawnAngle float64, wheelRadius float64, spawnAnimation *Animation
 		ModHitBox:      1,
 		SkewAngle:      -1,
 		Init:           func() {},
+		OtherUpdate:    func() {},
 	}
 }
 
@@ -66,6 +68,8 @@ func (s *Spawn) Update(wheelCenterX, wheelCenterY, wheelAngle float64) {
 	s.spawnRotation = s.SpawnAngle + wheelAngle + math.Pi/2
 
 	s.SpawnAnimation.AdvanceFrame()
+
+	s.OtherUpdate()
 }
 
 func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {

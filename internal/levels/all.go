@@ -14,16 +14,17 @@ var ALL_LEVEL_CHARTS = []string{
 }
 
 const LEVEL_BOSS_1 = `------------------------
+_SS_Q_o_o_o_o_o_o_
 _o_o_o_o_B_o_o_S_o`
 
 const LEVEL_BOSS_2 = `------------------------
-_o_m_o_o_B_o_o_m_o`
+_m___m_o_2_o_o_m_o`
 
 const LEVEL_BOSS_3 = `------------------------
-_o_o_o_|_B_|_o_o_o`
+_______|_3|______`
 
 var BOSS_LEVELS = []string{
+	LEVEL_BOSS_1,
 	LEVEL_BOSS_2,
-	LEVEL_BOSS_2,
-	LEVEL_BOSS_2,
+	LEVEL_BOSS_3,
 }

@@ -1,4 +1,4 @@
 package models
 
 var BOSS_HAS_INIT = false
-var BOSS_HEALTH float64 = 12.0
+var BOSS_HEALTH float64 = 6.0

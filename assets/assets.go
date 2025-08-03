@@ -33,12 +33,16 @@ const (
 	AssetKey_Start_PNG        AssetKey = "AssetKey_Start_PNG"
 	AssetKey_Shark_PNG        AssetKey = "AssetKey_Shark_PNG"
 	AssetKey_HedgeHog_PNG     AssetKey = "AssetKey_HedgeHog_PNG"
+	AssetKey_WinLose_PNG      AssetKey = "AssetKey_WinLose_PNG"
 	AssetKey_HIL_Font_TTF     AssetKey = "AssetKey_HIL_Font_TTF"
 )
 
 var (
 	//go:embed wheel.png
 	m_wheel_png []byte
+
+	//go:embed winlose.png
+	m_winlose_png []byte
 
 	//go:embed boss.png
 	m_boss_png []byte
@@ -150,5 +154,10 @@ var Assets = map[AssetKey]AssetRef{
 		Key:       AssetKey_Background_4_PNG,
 		AssetType: AssetType_PNG,
 		Data:      m_background4_png,
+	},
+	AssetKey_WinLose_PNG: {
+		Key:       AssetKey_WinLose_PNG,
+		AssetType: AssetType_PNG,
+		Data:      m_winlose_png,
 	},
 }
