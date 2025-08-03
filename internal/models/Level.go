@@ -144,4 +144,32 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		}
 		return shark
 	},
+	"M": func(index int) *Spawn {
+		mod := float64(assets.AnimationShark.InitialSprite.H / 4)
+		wheelRadiusModified := WHEEL_RADIUS + mod
+		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
+		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
+		hedgehog := NewSpawn(angle, wheelRadiusModified, &Animation{
+			FPS:          8,
+			CurrentFrame: 0,
+			Details:      assets.AnimationHedgeHog,
+			X:            0,
+			Y:            0,
+		})
+		hedgehog.Direction = DIRECTION_LEFT
+		hedgehog.Power = 50
+		hedgehog.OnCollision = func(ham *Hamster) {
+			damage := ham.Momentum.Current - hedgehog.Power
+			ham.Momentum.Current -= hedgehog.Power
+
+			if damage < 0 {
+				ham.Health -= 1
+			}
+
+			hedgehog.IsAlive = false
+
+			fmt.Printf("M %d\n", ham.Momentum.Current)
+		}
+		return hedgehog
+	},
 }

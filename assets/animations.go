@@ -48,6 +48,17 @@ var (
 		},
 		Direction: ANIMATION_DIRECTION_LEFT,
 	}
+	AnimationHedgeHog = AssetAnimation{
+		TotalFrames: 1,
+		InitialSprite: AssetSprite{
+			AssetKey: AssetKey_HedgeHog_PNG,
+			X:        0,
+			Y:        0,
+			W:        256,
+			H:        256,
+		},
+		Direction: ANIMATION_DIRECTION_RIGHT,
+	}
 	AnimationSeed = AssetAnimation{
 		TotalFrames: 1,
 		InitialSprite: AssetSprite{
