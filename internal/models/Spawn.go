@@ -63,8 +63,8 @@ func (s *Spawn) Update(wheelCenterX, wheelCenterY, wheelAngle float64) {
 }
 
 func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
-	DrawHitBox(screen, s.GetHitBox())
-	DrawHitBox(screen, s.GetRenderQuad())
+	// DrawHitBox(screen, s.GetHitBox())
+	// DrawHitBox(screen, s.GetRenderQuad())
 
 	img := s.SpawnAnimation.GetCurrentFrame()
 	animSs := game.ImageAssets[img.AssetKey]
