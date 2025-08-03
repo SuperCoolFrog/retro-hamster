@@ -1,10 +1,12 @@
-package scenes
+package models
 
 import (
 	"image"
+	"math"
 	"retro-hamster/assets"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text/v2"
 )
 
 // DrawSprite draws a sprite from the sprite sheet
@@ -34,4 +36,31 @@ func DrawAssetSpriteWithOptionsWithBoundsCorrect(spritesheet *ebiten.Image, scre
 	screen.DrawImage(sub,
 		&opts,
 	)
+}
+
+func DrawButton(g *Game, screen *ebiten.Image, button *GameAction) {
+	ss, ssExists := g.ImageAssets[assets.AssetKey_Static_PNG]
+	if !ssExists {
+		return
+	}
+
+	btnSelectedRect := assets.Sprite_Button_Focused
+
+	if button.Selected || button.Focused {
+		DrawSprite(ss.Image, screen, button.X, button.Y, btnSelectedRect.X, btnSelectedRect.Y, btnSelectedRect.W, btnSelectedRect.H)
+	} else {
+		DrawAssetSprite(ss.Image, screen, button.X, button.Y, assets.Sprite_Button)
+	}
+
+	if font, fontExists := g.FontAssets[assets.AssetKey_HIL_Font_TTF]; fontExists {
+		txtOps := &text.DrawOptions{}
+		txtOps.GeoM.Translate(float64(button.X)+float64(assets.Sprite_Button.W/2), float64(button.Y)+float64(assets.Sprite_Button.H)/3.5)
+		txtOps.ColorScale.ScaleWithColor(COLOR_PINK)
+		txtOps.PrimaryAlign = text.AlignCenter
+		text.Draw(screen, button.Text, &text.GoTextFace{
+			Source: font.Font,
+			Size:   float64(assets.Sprite_Button.H)/2 - math.Mod(float64(assets.Sprite_Button.H), 16),
+		}, txtOps)
+	}
+
 }

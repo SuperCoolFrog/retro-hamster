@@ -3,7 +3,6 @@ package models
 import (
 	"math"
 	"retro-hamster/assets"
-	"retro-hamster/internal/scenes"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -114,9 +113,9 @@ func (s *Hamster) Draw(screen *ebiten.Image) {
 			hOpts := ebiten.DrawImageOptions{}
 			hOpts.GeoM.Scale(float64(s.Direction), 1)
 			hOpts.GeoM.Translate(float64(s.X), float64(s.Y))
-			scenes.DrawAssetSpriteWithOptionsWithBoundsCorrect(s.assetRunSpriteSheet.Image, screen, runFrame.AssetSprite, hOpts)
+			DrawAssetSpriteWithOptionsWithBoundsCorrect(s.assetRunSpriteSheet.Image, screen, runFrame.AssetSprite, hOpts)
 		} else {
-			scenes.DrawSprite(s.assetRunSpriteSheet.Image, screen, runFrame.TargetX, runFrame.TargetY, runFrame.X, runFrame.Y, runFrame.W, runFrame.H)
+			DrawSprite(s.assetRunSpriteSheet.Image, screen, runFrame.TargetX, runFrame.TargetY, runFrame.X, runFrame.Y, runFrame.W, runFrame.H)
 		}
 	}
 
@@ -128,12 +127,12 @@ func (s *Hamster) Draw(screen *ebiten.Image) {
 
 func (s *Hamster) drawStaticHamster(screen *ebiten.Image) {
 	if s.Direction == DIRECTION_RIGHT {
-		scenes.DrawAssetSprite(s.assetStaticSpriteSheet.Image, screen, s.X, s.Y, assets.Sprite_Hamster)
+		DrawAssetSprite(s.assetStaticSpriteSheet.Image, screen, s.X, s.Y, assets.Sprite_Hamster)
 	} else {
 		hOpts := ebiten.DrawImageOptions{}
 		hOpts.GeoM.Scale(float64(s.Direction), 1)
 		hOpts.GeoM.Translate(float64(s.X), float64(s.Y))
-		scenes.DrawAssetSpriteWithOptionsWithBoundsCorrect(s.assetStaticSpriteSheet.Image, screen, assets.Sprite_Hamster, hOpts)
+		DrawAssetSpriteWithOptionsWithBoundsCorrect(s.assetStaticSpriteSheet.Image, screen, assets.Sprite_Hamster, hOpts)
 	}
 }
 
@@ -146,7 +145,7 @@ func (s *Hamster) drawHealth(screen *ebiten.Image) {
 
 	for i := range s.Health {
 		x := startX + float64(i*assets.Sprite_Heart.W)
-		scenes.DrawAssetSprite(s.assetStaticSpriteSheet.Image, screen, x, y, assets.Sprite_Heart)
+		DrawAssetSprite(s.assetStaticSpriteSheet.Image, screen, x, y, assets.Sprite_Heart)
 	}
 }
 

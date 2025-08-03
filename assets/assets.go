@@ -28,6 +28,7 @@ const (
 	AssetKey_Start_PNG       AssetKey = "AssetKey_Start_PNG"
 	AssetKey_Shark_PNG       AssetKey = "AssetKey_Shark_PNG"
 	AssetKey_HedgeHog_PNG    AssetKey = "AssetKey_HedgeHog_PNG"
+	AssetKey_HIL_Font_TTF    AssetKey = "AssetKey_HIL_Font_TTF"
 )
 
 var (
@@ -54,9 +55,17 @@ var (
 
 	//go:embed start.png
 	m_start_png []byte
+
+	//go:embed hockey-is-lif.medium.ttf
+	m_HIL_ttf []byte
 )
 
 var Assets = map[AssetKey]AssetRef{
+	AssetKey_HIL_Font_TTF: {
+		Key:       AssetKey_HIL_Font_TTF,
+		AssetType: AssetType_TTF,
+		Data:      m_HIL_ttf,
+	},
 	AssetKey_Wheel_PNG: {
 		Key:       AssetKey_Wheel_PNG,
 		AssetType: AssetType_PNG,

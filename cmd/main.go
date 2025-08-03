@@ -21,11 +21,14 @@ func main() {
 	ebiten.SetWindowSize(game.ScreenW, game.ScreenH)
 	ebiten.SetWindowTitle("Retro Hamster - The Big Wheel")
 
-	// game.ChangeState(&states.PlaceholderState{})
-	game.ChangeState(&states.WheelState{
-		Game:         game,
-		CurrentLevel: -1,
-		CurrentRound: -1,
+	// game.ChangeState(&states.WheelState{
+	// 	Game:         game,
+	// 	CurrentLevel: -1,
+	// 	CurrentRound: -1,
+	// })
+
+	game.ChangeState(&states.StartState{
+		Game: game,
 	})
 
 	if err := ebiten.RunGame(game); err != nil {

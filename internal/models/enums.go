@@ -1,6 +1,9 @@
 package models
 
-import "retro-hamster/assets"
+import (
+	"image/color"
+	"retro-hamster/assets"
+)
 
 type DIRECTION = int8
 
@@ -15,3 +18,5 @@ var WHEEL_WIDTH = float64(assets.Sprite_Wheel.W) * WHEEL_SCALE
 var WHEEL_HEIGHT = float64(assets.Sprite_Wheel.H) * WHEEL_SCALE
 
 const SPAWN_SPACING = 256.0
+
+var COLOR_PINK = color.RGBA{252, 48, 125, 255}

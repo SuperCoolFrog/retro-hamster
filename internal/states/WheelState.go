@@ -6,7 +6,6 @@ import (
 	"retro-hamster/assets"
 	"retro-hamster/internal/levels"
 	"retro-hamster/internal/models"
-	"retro-hamster/internal/scenes"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -119,7 +118,7 @@ func (s *WheelState) updateSpawns(spawns []*models.Spawn) {
 func (s *WheelState) Draw(screen *ebiten.Image) {
 	/* Background */
 	bg := s.Game.ImageAssets[assets.AssetKey_Background_PNG]
-	scenes.DrawAssetSprite(bg.Image, screen, 0, 0, assets.Sprite_Background)
+	models.DrawAssetSprite(bg.Image, screen, 0, 0, assets.Sprite_Background)
 
 	/* #region wheel */
 	wheelPng := s.Game.ImageAssets[assets.AssetKey_Wheel_PNG]
@@ -133,7 +132,7 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	// Move it to the screen center after rotation
 	op.GeoM.Translate(float64(s.Game.ScreenW)/2, float64(s.Game.ScreenH)/2+wheelH/2)
 
-	scenes.DrawAssetSpriteWithOptions(wheelPng.Image, screen, assets.Sprite_Wheel, op)
+	models.DrawAssetSpriteWithOptions(wheelPng.Image, screen, assets.Sprite_Wheel, op)
 	/* #endregion wheel */
 
 	/* #region Animations */

@@ -20,11 +20,11 @@ type GameAction struct {
 	Selected   bool
 	Available  bool
 	Counter    int
-	X, Y, W, H int
+	X, Y, W, H float64
 	OnClickFn  func()
 }
 
-func (a *GameAction) Contains(x, y int) bool {
+func (a *GameAction) Contains(x, y float64) bool {
 	if a == nil {
 		return false
 	}
