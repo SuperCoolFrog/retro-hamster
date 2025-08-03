@@ -179,7 +179,6 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 			Details:      assets.AnimationBossPhase1,
 		})
 		boss.Power = 100
-		// boss.IsObstacle = true
 		boss.IsAlive = true
 		boss.LastActivation = time.Now().Add(-time.Minute)
 		boss.ActivationCoolDown = time.Second
@@ -195,6 +194,10 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 					fmt.Printf("Boss H %d", boss.Health)
 				}
 
+				if boss.StartingHealth-boss.Health >= 2 {
+					boss.IsAlive = false
+				}
+
 				boss.LastActivation = time.Now()
 			}
 
@@ -206,7 +209,10 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 
 			ham.Momentum.Current = 0
 		}
-		boss.Health = 10
+
+		BOSS_SPAG.HasInit = BOSS_SPAG.HasInit || true
+		boss.StartingHealth = BOSS_SPAG.Health
+		boss.Health = BOSS_SPAG.Health
 
 		boss.SkewAngle = math.Pi / 12
 		return boss

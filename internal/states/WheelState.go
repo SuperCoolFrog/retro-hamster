@@ -174,12 +174,16 @@ func (s *WheelState) setupAllLevels() {
 		return
 	}
 
-	for i := range levels.ALL_LEVEL_CHARTS {
+	allAndBoss := make([]string, 0)
+	allAndBoss = append(allAndBoss, levels.ALL_LEVEL_CHARTS...)
+	allAndBoss = append(allAndBoss, levels.BOSS_LEVELS...)
+
+	for i := range allAndBoss {
 		level := &models.Level{
 			Rounds: map[int][]*models.Spawn{},
 		}
 
-		chart := levels.ALL_LEVEL_CHARTS[i]
+		chart := allAndBoss[i]
 
 		roundsChart := strings.Split(chart, "\n")[1:] // skip first line
 

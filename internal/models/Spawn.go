@@ -18,6 +18,7 @@ type Spawn struct {
 	Direction      DIRECTION
 	OnCollision    func(ham *Hamster)
 	ModHitBox      float64
+	StartingHealth float64
 	Health         float64
 	SkewAngle      float64
 
