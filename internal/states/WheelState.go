@@ -46,49 +46,6 @@ func (s *WheelState) OnTransition() {
 
 	s.ham = models.NewHamster(s.Game)
 
-	// snake := &models.Animation{
-	// 	FPS:          12,
-	// 	CurrentFrame: 0,
-	// 	Details:      assets.AnimationSnake,
-	// 	X:            0,
-	// 	Y:            0,
-	// }
-
-	// snakeSpawn := models.NewSpawn(5, wheelRadius+float64(assets.AnimationSnake.InitialSprite.W)/4, snake)
-	// snakeSpawn.Direction = models.DIRECTION_LEFT
-	// snakeSpawn.Power = 50
-	// snakeSpawn.OnCollision = func(hamster *models.Hamster) {
-	// 	damage := hamster.Momentum.Current - snakeSpawn.Power
-	// 	hamster.Momentum.Current -= snakeSpawn.Power
-
-	// 	if damage < 0 {
-	// 		hamster.Health -= 1
-	// 	}
-
-	// 	snakeSpawn.IsAlive = false
-	// }
-	// s.Spawns = append(s.Spawns, snakeSpawn)
-
-	// mod := float64(assets.AnimationSeed.InitialSprite.W / 4)
-	// wheelRadiusModified := wheelRadius - mod
-	// space := 512.0
-	// for i := range 5 {
-	// 	angle := float64(i) * space / (wheelRadiusModified)
-	// 	// angle -= math.Pi / 2 /* THis will translate to top as starting point */
-	// 	// angle := float64(i) * 2 * math.Pi / 5
-	// 	seed := models.NewSpawn(angle, wheelRadiusModified, &models.Animation{
-	// 		FPS:          0,
-	// 		CurrentFrame: 0,
-	// 		Details:      assets.AnimationSeed,
-	// 	})
-	// 	seed.Power = 5
-	// 	seed.OnCollision = func(ham *models.Hamster) {
-	// 		s.ham.XP.Current += seed.Power
-	// 		seed.IsAlive = false
-	// 	}
-	// 	s.Spawns = append(s.Spawns, seed)
-	// }
-
 	s.setupAllLevels()
 
 	if s.CurrentLevel == -1 {
@@ -160,6 +117,9 @@ func (s *WheelState) updateSpawns(spawns []*models.Spawn) {
 }
 
 func (s *WheelState) Draw(screen *ebiten.Image) {
+	/* Background */
+	bg := s.Game.ImageAssets[assets.AssetKey_Background_PNG]
+	scenes.DrawAssetSprite(bg.Image, screen, 0, 0, assets.Sprite_Background)
 
 	/* #region wheel */
 	wheelPng := s.Game.ImageAssets[assets.AssetKey_Wheel_PNG]

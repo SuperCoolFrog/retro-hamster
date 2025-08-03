@@ -34,8 +34,7 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		return seed
 	},
 	"m": func(index int) *Spawn {
-		mod := float64(assets.AnimationBlock.InitialSprite.W / 5)
-		wheelRadiusModified := WHEEL_RADIUS + mod
+		wheelRadiusModified := WHEEL_RADIUS
 		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
 		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
 		blockSpawn := NewSpawn(angle, wheelRadiusModified, &Animation{

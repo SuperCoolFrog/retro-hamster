@@ -40,6 +40,7 @@ func NewSpawn(spawnAngle float64, wheelRadius float64, spawnAnimation *Animation
 		H:              float64(spawnAnimation.Details.InitialSprite.H),
 		IsAlive:        true,
 		OnCollision:    func(ham *Hamster) {},
+		ModHitBox:      1,
 	}
 }
 
