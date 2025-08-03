@@ -37,6 +37,17 @@ var (
 		},
 		Direction: ANIMATION_DIRECTION_LEFT,
 	}
+	AnimationShark = AssetAnimation{
+		TotalFrames: 4,
+		InitialSprite: AssetSprite{
+			AssetKey: AssetKey_Shark_PNG,
+			X:        0,
+			Y:        0,
+			W:        256,
+			H:        256,
+		},
+		Direction: ANIMATION_DIRECTION_LEFT,
+	}
 	AnimationSeed = AssetAnimation{
 		TotalFrames: 1,
 		InitialSprite: AssetSprite{
