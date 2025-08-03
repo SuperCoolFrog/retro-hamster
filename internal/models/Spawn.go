@@ -21,6 +21,7 @@ type Spawn struct {
 	StartingHealth float64
 	Health         float64
 	SkewAngle      float64
+	Init           func()
 
 	LastActivation     time.Time
 	ActivationCoolDown time.Duration
@@ -45,6 +46,7 @@ func NewSpawn(spawnAngle float64, wheelRadius float64, spawnAnimation *Animation
 		OnCollision:    func(ham *Hamster) {},
 		ModHitBox:      1,
 		SkewAngle:      -1,
+		Init:           func() {},
 	}
 }
 
@@ -67,8 +69,8 @@ func (s *Spawn) Update(wheelCenterX, wheelCenterY, wheelAngle float64) {
 }
 
 func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
-	DrawHitBox(screen, s.GetHitBox())
-	DrawHitBox(screen, s.GetRenderQuad())
+	// DrawHitBox(screen, s.GetHitBox())
+	// DrawHitBox(screen, s.GetRenderQuad())
 
 	img := s.SpawnAnimation.GetCurrentFrame()
 	animSs := game.ImageAssets[img.AssetKey]

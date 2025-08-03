@@ -9,10 +9,15 @@ import (
 
 type GameOverState struct {
 	Game *models.Game
+	Win  bool
 }
 
 func (s *GameOverState) OnTransition() {
-	fmt.Println("GAME OVER")
+	if s.Win {
+		fmt.Println("YOU WIN")
+	} else {
+		fmt.Println("YOU LOSE")
+	}
 }
 
 func (s *GameOverState) Update() error {

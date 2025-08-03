@@ -191,7 +191,8 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 					ham.Health -= 1
 				} else {
 					boss.Health -= 1
-					fmt.Printf("Boss H %d", boss.Health)
+					BOSS_HEALTH = boss.Health
+					fmt.Printf("Boss H %f\n", boss.Health)
 				}
 
 				if boss.StartingHealth-boss.Health >= 2 {
@@ -210,9 +211,11 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 			ham.Momentum.Current = 0
 		}
 
-		BOSS_SPAG.HasInit = BOSS_SPAG.HasInit || true
-		boss.StartingHealth = BOSS_SPAG.Health
-		boss.Health = BOSS_SPAG.Health
+		boss.Init = func() {
+			BOSS_HAS_INIT = true
+			boss.StartingHealth = BOSS_HEALTH
+			boss.Health = BOSS_HEALTH
+		}
 
 		boss.SkewAngle = math.Pi / 12
 		return boss

@@ -109,6 +109,18 @@ func (s *WheelState) Update() error {
 	}
 	s.Spawns = s.Spawns[:writeIndex]
 
+	if models.BOSS_HAS_INIT && models.BOSS_HEALTH < 1 {
+		s.Game.ChangeState(&GameOverState{
+			Win:  true,
+			Game: s.Game,
+		})
+	} else if s.ham.Health < 1 {
+		s.Game.ChangeState(&GameOverState{
+			Win:  false,
+			Game: s.Game,
+		})
+	}
+
 	return nil
 }
 
@@ -205,6 +217,34 @@ func (s *WheelState) setupAllLevels() {
 	}
 }
 
+func (s *WheelState) appendLevels(lvls []string) {
+	for i := range lvls {
+		level := &models.Level{
+			Rounds: map[int][]*models.Spawn{},
+		}
+
+		chart := lvls[i]
+
+		roundsChart := strings.Split(chart, "\n")[1:] // skip first line
+
+		for roundIdx := range roundsChart {
+			round := roundsChart[roundIdx]
+
+			spawns := make([]*models.Spawn, 0)
+
+			for idx, spawnSymbol := range round {
+				if string(spawnSymbol) != " " && string(spawnSymbol) != "_" {
+					spawns = append(spawns, models.SymbolToSpawnMap[string(spawnSymbol)](idx))
+				}
+			}
+
+			level.Rounds[roundIdx] = spawns
+		}
+
+		s.Levels = append(s.Levels, level)
+	}
+}
+
 func (s *WheelState) checkLevel() {
 	canAdvance := true
 
@@ -225,6 +265,7 @@ func (s *WheelState) loadLevel(levelIdx, roundIdx int) {
 
 	for _, spawn := range roundSpawns {
 		spawn.SetHamsterRelativeOffset(s.ham.LogicalAngle)
+		spawn.Init()
 	}
 
 	s.Spawns = roundSpawns
@@ -246,9 +287,15 @@ func (s *WheelState) nextRoundOrLevel() {
 		nextLevel = s.CurrentLevel + 1
 
 		if nextLevel >= len(s.Levels) {
-			s.Game.ChangeState(&GameOverState{
-				Game: s.Game,
-			})
+
+			if models.BOSS_HAS_INIT && models.BOSS_HEALTH > 0 {
+				s.appendLevels(levels.BOSS_LEVELS)
+			} else {
+				s.Game.ChangeState(&GameOverState{
+					Win:  true,
+					Game: s.Game,
+				})
+			}
 			return
 		}
 
