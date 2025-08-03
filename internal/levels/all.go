@@ -1,7 +1,7 @@
 package levels
 
 const LEVEL_1_CHART = `------------------------
-_o_S_o_o_M_o_o_o
+_o_B_o_o_M_o_o_o
 _o_S_o_m_o_Q_o_o`
 
 const LEVEL_2_CHART = `------------------------

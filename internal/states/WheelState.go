@@ -1,7 +1,6 @@
 package states
 
 import (
-	"fmt"
 	"math"
 	"retro-hamster/assets"
 	"retro-hamster/internal/levels"
@@ -103,7 +102,7 @@ func (s *WheelState) Update() error {
 	// In Place Remove dead
 	writeIndex := 0
 	for _, spawn := range s.Spawns {
-		if spawn.IsAlive { // Condition: keep even numbers
+		if spawn.IsAlive {
 			s.Spawns[writeIndex] = spawn
 			writeIndex++
 		}
@@ -181,7 +180,6 @@ func (s *WheelState) setupAllLevels() {
 		}
 
 		chart := levels.ALL_LEVEL_CHARTS[i]
-		fmt.Printf("%s", chart)
 
 		roundsChart := strings.Split(chart, "\n")[1:] // skip first line
 
@@ -231,6 +229,10 @@ func (s *WheelState) loadLevel(levelIdx, roundIdx int) {
 }
 
 func (s *WheelState) nextRoundOrLevel() {
+	if len(s.Levels) == 0 {
+		return
+	}
+
 	nextLevel := s.CurrentLevel
 	level := s.Levels[nextLevel]
 	nextRound := s.CurrentRound + 1

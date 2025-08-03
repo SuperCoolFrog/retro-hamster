@@ -18,6 +18,8 @@ type Spawn struct {
 	Direction      DIRECTION
 	OnCollision    func(ham *Hamster)
 	ModHitBox      float64
+	Health         float64
+	SkewAngle      float64
 
 	LastActivation     time.Time
 	ActivationCoolDown time.Duration
@@ -41,6 +43,7 @@ func NewSpawn(spawnAngle float64, wheelRadius float64, spawnAnimation *Animation
 		IsAlive:        true,
 		OnCollision:    func(ham *Hamster) {},
 		ModHitBox:      1,
+		SkewAngle:      -1,
 	}
 }
 
@@ -63,8 +66,8 @@ func (s *Spawn) Update(wheelCenterX, wheelCenterY, wheelAngle float64) {
 }
 
 func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
-	// DrawHitBox(screen, s.GetHitBox())
-	// DrawHitBox(screen, s.GetRenderQuad())
+	DrawHitBox(screen, s.GetHitBox())
+	DrawHitBox(screen, s.GetRenderQuad())
 
 	img := s.SpawnAnimation.GetCurrentFrame()
 	animSs := game.ImageAssets[img.AssetKey]
@@ -81,6 +84,7 @@ func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
 
 func (s *Spawn) DrawImageFromQuad(screen *ebiten.Image, spriteSheet *ebiten.Image, opts QuadDrawOptions) {
 	hitbox := s.GetRenderQuad()
+
 	src := opts.SrcRect
 	texW := float32(src.Dx())
 	texH := float32(src.Dy())
@@ -154,7 +158,12 @@ func (s *Spawn) GetHitBox() [4]Vector {
 		corners[i].Y = s.Y + cx*sin + cy*cos
 	}
 
-	return s.scaleHitbox(corners)
+	scaled := s.scaleHitbox(corners)
+	if s.SkewAngle != -1 {
+		return RotateQuad(scaled, s.SkewAngle)
+	}
+
+	return scaled
 }
 
 func (s *Spawn) GetRenderQuad() [4]Vector {
@@ -175,6 +184,10 @@ func (s *Spawn) GetRenderQuad() [4]Vector {
 		cy := corners[i].Y
 		corners[i].X = s.X + cx*cos - cy*sin
 		corners[i].Y = s.Y + cx*sin + cy*cos
+	}
+
+	if s.SkewAngle != -1 {
+		return RotateQuad(corners, s.SkewAngle)
 	}
 
 	return corners
@@ -229,4 +242,29 @@ func (s *Spawn) scaleHitbox(hitbox [4]Vector) [4]Vector {
 	}
 
 	return scaled
+}
+
+func RotateQuad(quad [4]Vector, angle float64) [4]Vector {
+	// Step 1: Compute center of quad
+	var cx, cy float64
+	for _, v := range quad {
+		cx += v.X
+		cy += v.Y
+	}
+	cx /= 4
+	cy /= 4
+
+	// Step 2: Rotate each point around the center
+	sinA, cosA := math.Sin(angle), math.Cos(angle)
+	var rotated [4]Vector
+	for i, v := range quad {
+		dx := v.X - cx
+		dy := v.Y - cy
+		rotated[i] = Vector{
+			X: cx + dx*cosA - dy*sinA,
+			Y: cy + dx*sinA + dy*cosA,
+		}
+	}
+
+	return rotated
 }

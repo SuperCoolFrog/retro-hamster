@@ -32,6 +32,16 @@ var (
 	Sprite_Button_Focused = AssetSprite{AssetKey_Static_PNG, 0, 512, 256, 128}
 	Sprite_Health_Card    = AssetSprite{AssetKey_Static_PNG, 384, 384, 256, 256}
 	Sprite_Momentum_Card  = AssetSprite{AssetKey_Static_PNG, 640, 384, 256, 256}
+	// Sprite_Boss_Phase_1   = AssetSprite{AssetKey_Boss_PNG, 0, 0, 512, 512}
+	// Sprite_Boss_Phase_2   = AssetSprite{AssetKey_Boss_PNG, 512, 0, 512, 512}
+	// Sprite_Boss_Phase_3   = AssetSprite{AssetKey_Boss_PNG, 1024, 0, 512, 512}
+	// Sprite_Boss_Phase_1 = AssetSprite{AssetKey_Boss_PNG, 0, 0, 512 / 2, 512 / 2}
+	// Sprite_Boss_Phase_2 = AssetSprite{AssetKey_Boss_PNG, 512 / 2, 0, 512 / 2, 512 / 2}
+	// Sprite_Boss_Phase_3 = AssetSprite{AssetKey_Boss_PNG, 1024 / 2, 0, 512 / 2, 512 / 2}
+
+	Sprite_Boss_Phase_1 = AssetSprite{AssetKey_Boss_PNG, 110, 92, 274, 332}
+	Sprite_Boss_Phase_2 = AssetSprite{AssetKey_Boss_PNG, 512, 0, 512, 512}
+	Sprite_Boss_Phase_3 = AssetSprite{AssetKey_Boss_PNG, 1024, 0, 512, 512}
 )
 
 func (spr AssetSprite) GetImageRect() image.Rectangle {

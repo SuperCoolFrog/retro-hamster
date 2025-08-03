@@ -60,6 +60,9 @@ func (s *StartState) Update() error {
 				CurrentLevel: -1,
 				CurrentRound: -1,
 			})
+			// s.Game.ChangeState(&BossPhase1State{
+			// 	Game: s.Game,
+			// })
 			return nil
 		} else if s.exitItem.Focused {
 			s.Game.UTIL_EXIT = true

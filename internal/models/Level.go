@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"math"
 	"retro-hamster/assets"
 	"time"
 )
@@ -29,7 +30,6 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		seed.OnCollision = func(ham *Hamster) {
 			ham.XP.Current += seed.Power
 			seed.IsAlive = false
-			fmt.Printf("XP %d\n", ham.XP.Current)
 		}
 		return seed
 	},
@@ -111,8 +111,6 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 			}
 
 			snake.IsAlive = false
-
-			fmt.Printf("M %d\n", ham.Momentum.Current)
 		}
 		return snake
 	},
@@ -140,8 +138,6 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 			}
 
 			shark.IsAlive = false
-
-			fmt.Printf("M %d\n", ham.Momentum.Current)
 		}
 		return shark
 	},
@@ -169,9 +165,50 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 			}
 
 			hedgehog.IsAlive = false
-
-			fmt.Printf("M %d\n", ham.Momentum.Current)
 		}
 		return hedgehog
+	},
+	"B": func(index int) *Spawn {
+		mod := float64(assets.AnimationBossPhase1.InitialSprite.W / 4)
+		wheelRadiusModified := WHEEL_RADIUS + mod
+		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
+		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
+		boss := NewSpawn(angle, wheelRadiusModified, &Animation{
+			FPS:          0,
+			CurrentFrame: 0,
+			Details:      assets.AnimationBossPhase1,
+		})
+		boss.Power = 100
+		// boss.IsObstacle = true
+		boss.IsAlive = true
+		boss.LastActivation = time.Now().Add(-time.Minute)
+		boss.ActivationCoolDown = time.Second
+		boss.OnCollision = func(ham *Hamster) {
+			if time.Since(boss.LastActivation) > boss.ActivationCoolDown {
+				damage := ham.Momentum.Current - boss.Power
+				ham.Momentum.Current -= boss.Power
+
+				if damage < 0 {
+					ham.Health -= 1
+				} else {
+					boss.Health -= 1
+					fmt.Printf("Boss H %d", boss.Health)
+				}
+
+				boss.LastActivation = time.Now()
+			}
+
+			if ham.X < boss.X {
+				ham.Blocked = DIRECTION_RIGHT
+			} else {
+				ham.Blocked = DIRECTION_LEFT
+			}
+
+			ham.Momentum.Current = 0
+		}
+		boss.Health = 10
+
+		boss.SkewAngle = math.Pi / 12
+		return boss
 	},
 }

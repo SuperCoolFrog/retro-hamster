@@ -92,4 +92,19 @@ var (
 		},
 		Direction: ANIMATION_DIRECTION_LEFT,
 	}
+	AnimationBossPhase1 = AssetAnimation{
+		TotalFrames:   1,
+		InitialSprite: Sprite_Boss_Phase_1,
+		Direction:     ANIMATION_DIRECTION_NONE,
+	}
+	AnimationBossPhase2 = AssetAnimation{
+		TotalFrames:   1,
+		InitialSprite: Sprite_Boss_Phase_2,
+		Direction:     ANIMATION_DIRECTION_NONE,
+	}
+	AnimationBossPhase3 = AssetAnimation{
+		TotalFrames:   1,
+		InitialSprite: Sprite_Boss_Phase_2,
+		Direction:     ANIMATION_DIRECTION_NONE,
+	}
 )
