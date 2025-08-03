@@ -1,8 +1,17 @@
 package assets
 
+type AnimationDirection int8
+
+const (
+	ANIMATION_DIRECTION_NONE  = 0
+	ANIMATION_DIRECTION_LEFT  = -1
+	ANIMATION_DIRECTION_RIGHT = 1
+)
+
 type AssetAnimation struct {
 	TotalFrames   int
 	InitialSprite AssetSprite
+	Direction     AnimationDirection
 }
 
 var (
@@ -15,9 +24,10 @@ var (
 			W:        256,
 			H:        256,
 		},
+		Direction: ANIMATION_DIRECTION_RIGHT,
 	}
 	AnimationSnake = AssetAnimation{
-		TotalFrames: 6,
+		TotalFrames: 4,
 		InitialSprite: AssetSprite{
 			AssetKey: AssetKey_Snake_PNG,
 			X:        0,
@@ -25,6 +35,7 @@ var (
 			W:        256,
 			H:        256,
 		},
+		Direction: ANIMATION_DIRECTION_LEFT,
 	}
 	AnimationSeed = AssetAnimation{
 		TotalFrames: 1,
@@ -35,6 +46,7 @@ var (
 			W:        Sprite_Seed.W,
 			H:        Sprite_Seed.H,
 		},
+		Direction: ANIMATION_DIRECTION_NONE,
 	}
 	AnimationBlock = AssetAnimation{
 		TotalFrames: 1,
@@ -45,6 +57,7 @@ var (
 			W:        Sprite_Block.W,
 			H:        Sprite_Block.H,
 		},
+		Direction: ANIMATION_DIRECTION_NONE,
 	}
 	AnimationFence = AssetAnimation{
 		TotalFrames: 1,
@@ -55,5 +68,6 @@ var (
 			W:        Sprite_Fence.W,
 			H:        Sprite_Fence.H,
 		},
+		Direction: ANIMATION_DIRECTION_LEFT,
 	}
 )

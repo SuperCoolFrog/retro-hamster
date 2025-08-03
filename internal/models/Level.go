@@ -94,7 +94,7 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
 		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
 		snake := NewSpawn(angle, wheelRadiusModified, &Animation{
-			FPS:          12,
+			FPS:          8,
 			CurrentFrame: 0,
 			Details:      assets.AnimationSnake,
 			X:            0,

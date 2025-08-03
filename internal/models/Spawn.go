@@ -3,6 +3,7 @@ package models
 import (
 	"image"
 	"math"
+	"retro-hamster/assets"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -69,7 +70,8 @@ func (s *Spawn) Draw(game *Game, screen *ebiten.Image) {
 	sub := animSs.Image.SubImage(image.Rect(asset.X, asset.Y, asset.X+asset.W, asset.Y+asset.H)).(*ebiten.Image)
 
 	hOpts := ebiten.DrawImageOptions{}
-	if s.Direction == DIRECTION_LEFT {
+	// if  s.Direction == DIRECTION_LEFT {
+	if s.Direction != DIRECTION(s.SpawnAnimation.Details.Direction) && s.SpawnAnimation.Details.Direction != assets.ANIMATION_DIRECTION_NONE {
 		hOpts.GeoM.Scale(float64(s.Direction), 1)
 		hOpts.GeoM.Translate(float64(sub.Bounds().Dx()), 0) // Corrects after flipping
 	}
