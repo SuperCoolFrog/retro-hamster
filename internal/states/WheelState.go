@@ -32,6 +32,8 @@ type WheelState struct {
 	Levels       []*models.Level
 	CurrentLevel int
 	CurrentRound int
+
+	parallaxer *models.Parallaxer
 }
 
 func (s *WheelState) OnTransition() {
@@ -50,6 +52,12 @@ func (s *WheelState) OnTransition() {
 	if s.CurrentLevel == -1 {
 		s.loadLevel(0, 0)
 	}
+
+	s.parallaxer = models.NewParallaxer()
+	s.parallaxer.AddDetails(0, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_1_PNG])
+	s.parallaxer.AddDetails(1, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_2_PNG])
+	s.parallaxer.AddDetails(2, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_3_PNG])
+	s.parallaxer.AddDetails(3, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_4_PNG])
 }
 
 func (s *WheelState) Update() error {
@@ -60,12 +68,14 @@ func (s *WheelState) Update() error {
 		s.ham.Direction = models.DIRECTION_LEFT
 		s.ham.IsRunning = true
 		s.ham.Blocked = models.DIRECTION_NONE
+		// s.parallaxer.Update(models.DIRECTION_RIGHT)
 	} else if ebiten.IsKeyPressed(ebiten.KeyD) && s.ham.Blocked != models.DIRECTION_RIGHT {
 		// s.angle -= 2 * math.Pi / 180
 		s.angle -= .75 * math.Pi / 180
 		s.ham.Direction = models.DIRECTION_RIGHT
 		s.ham.IsRunning = true
 		s.ham.Blocked = models.DIRECTION_NONE
+		// s.parallaxer.Update(models.DIRECTION_LEFT)
 	} else {
 		s.ham.IsRunning = false
 	}
@@ -116,6 +126,7 @@ func (s *WheelState) updateSpawns(spawns []*models.Spawn) {
 }
 
 func (s *WheelState) Draw(screen *ebiten.Image) {
+	// s.parallaxer.Draw(screen)
 	/* Background */
 	bg := s.Game.ImageAssets[assets.AssetKey_Background_PNG]
 	models.DrawAssetSprite(bg.Image, screen, 0, 0, assets.Sprite_Background)

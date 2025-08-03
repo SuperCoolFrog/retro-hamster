@@ -19,16 +19,20 @@ type AssetRef struct {
 }
 
 const (
-	AssetKey_NONE            AssetKey = "AssetKey_NONE"
-	AssetKey_Static_PNG      AssetKey = "AssetKey_Static_PNG"
-	AssetKey_Wheel_PNG       AssetKey = "AssetKey_Wheel_PNG"
-	AssetKey_Hamster_Run_PNG AssetKey = "AssetKey_Hamster_Run_PNG"
-	AssetKey_Snake_PNG       AssetKey = "AssetKey_Snake_PNG"
-	AssetKey_Background_PNG  AssetKey = "AssetKey_Background_PNG"
-	AssetKey_Start_PNG       AssetKey = "AssetKey_Start_PNG"
-	AssetKey_Shark_PNG       AssetKey = "AssetKey_Shark_PNG"
-	AssetKey_HedgeHog_PNG    AssetKey = "AssetKey_HedgeHog_PNG"
-	AssetKey_HIL_Font_TTF    AssetKey = "AssetKey_HIL_Font_TTF"
+	AssetKey_NONE             AssetKey = "AssetKey_NONE"
+	AssetKey_Static_PNG       AssetKey = "AssetKey_Static_PNG"
+	AssetKey_Wheel_PNG        AssetKey = "AssetKey_Wheel_PNG"
+	AssetKey_Hamster_Run_PNG  AssetKey = "AssetKey_Hamster_Run_PNG"
+	AssetKey_Snake_PNG        AssetKey = "AssetKey_Snake_PNG"
+	AssetKey_Background_PNG   AssetKey = "AssetKey_Background_PNG"
+	AssetKey_Background_1_PNG AssetKey = "AssetKey_Background_1_PNG"
+	AssetKey_Background_2_PNG AssetKey = "AssetKey_Background_2_PNG"
+	AssetKey_Background_3_PNG AssetKey = "AssetKey_Background_3_PNG"
+	AssetKey_Background_4_PNG AssetKey = "AssetKey_Background_4_PNG"
+	AssetKey_Start_PNG        AssetKey = "AssetKey_Start_PNG"
+	AssetKey_Shark_PNG        AssetKey = "AssetKey_Shark_PNG"
+	AssetKey_HedgeHog_PNG     AssetKey = "AssetKey_HedgeHog_PNG"
+	AssetKey_HIL_Font_TTF     AssetKey = "AssetKey_HIL_Font_TTF"
 )
 
 var (
@@ -52,6 +56,18 @@ var (
 
 	//go:embed background.png
 	m_background_png []byte
+
+	//go:embed background_1.png
+	m_background1_png []byte
+
+	//go:embed background_2.png
+	m_background2_png []byte
+
+	//go:embed background_3.png
+	m_background3_png []byte
+
+	//go:embed background_4.png
+	m_background4_png []byte
 
 	//go:embed start.png
 	m_start_png []byte
@@ -105,5 +121,25 @@ var Assets = map[AssetKey]AssetRef{
 		Key:       AssetKey_HedgeHog_PNG,
 		AssetType: AssetType_PNG,
 		Data:      m_hedgehog_png,
+	},
+	AssetKey_Background_1_PNG: {
+		Key:       AssetKey_Background_1_PNG,
+		AssetType: AssetType_PNG,
+		Data:      m_background1_png,
+	},
+	AssetKey_Background_2_PNG: {
+		Key:       AssetKey_Background_2_PNG,
+		AssetType: AssetType_PNG,
+		Data:      m_background2_png,
+	},
+	AssetKey_Background_3_PNG: {
+		Key:       AssetKey_Background_3_PNG,
+		AssetType: AssetType_PNG,
+		Data:      m_background3_png,
+	},
+	AssetKey_Background_4_PNG: {
+		Key:       AssetKey_Background_4_PNG,
+		AssetType: AssetType_PNG,
+		Data:      m_background4_png,
 	},
 }
