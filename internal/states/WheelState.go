@@ -149,7 +149,7 @@ func (s *WheelState) Update() error {
 
 func (s *WheelState) updateSpawns(spawns []*models.Spawn) {
 	for _, spawn := range spawns {
-		x := (float64(s.Game.ScreenW) / 2) - spawn.W
+		x := (float64(s.Game.ScreenW) / 2) // - spawn.W
 		y := float64(s.Game.ScreenH/2) + wheelH/2
 		spawn.Update(x, y, s.angle)
 

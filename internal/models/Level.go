@@ -89,7 +89,7 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 
 	/* ENEMIES */
 	"S": func(index int) *Spawn {
-		mod := float64(assets.AnimationSnake.InitialSprite.W / 4)
+		mod := float64(WHEEL_RADIUS / 25)
 		wheelRadiusModified := WHEEL_RADIUS + mod
 		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
 		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
@@ -102,6 +102,7 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		})
 		snake.Direction = DIRECTION_LEFT
 		snake.Power = 50
+		snake.ModHitBox = .5
 		snake.OnCollision = func(ham *Hamster) {
 			damage := ham.Momentum.Current - snake.Power
 			ham.Momentum.Current -= snake.Power
@@ -130,6 +131,7 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		})
 		shark.Direction = DIRECTION_LEFT
 		shark.Power = 50
+		shark.ModHitBox = .5
 		shark.OnCollision = func(ham *Hamster) {
 			damage := ham.Momentum.Current - shark.Power
 			ham.Momentum.Current -= shark.Power
@@ -145,7 +147,7 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		return shark
 	},
 	"M": func(index int) *Spawn {
-		mod := float64(assets.AnimationShark.InitialSprite.H / 4)
+		mod := float64(assets.AnimationShark.InitialSprite.H / 5)
 		wheelRadiusModified := WHEEL_RADIUS + mod
 		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
 		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
@@ -156,6 +158,7 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 			X:            0,
 			Y:            0,
 		})
+		hedgehog.ModHitBox = .5
 		hedgehog.Direction = DIRECTION_LEFT
 		hedgehog.Power = 50
 		hedgehog.OnCollision = func(ham *Hamster) {

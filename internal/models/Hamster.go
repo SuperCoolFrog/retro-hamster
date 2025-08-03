@@ -104,6 +104,7 @@ func (s *Hamster) Update(wheelAngle float64) {
 
 func (s *Hamster) Draw(screen *ebiten.Image) {
 	// DrawCollisionRect(screen, s.GetCollisionRect(), color.RGBA{0, 255, 0, 255})
+	DrawHitBox(screen, s.GetCollisionRect().toVector4())
 
 	if !s.IsRunning || s.IsJumping {
 		s.drawStaticHamster(screen)
@@ -150,9 +151,10 @@ func (s *Hamster) drawHealth(screen *ebiten.Image) {
 }
 
 func (s *Hamster) GetCollisionRect() CollisionRect {
-	if s.IsJumping {
+	mod := 100.0
 
-		return CollisionRect{s.X, s.Y, s.W, s.H / 3}
+	if s.IsJumping {
+		return CollisionRect{s.X + mod/2, s.Y + mod, s.W - mod, (s.H - mod) / 3}
 	}
-	return CollisionRect{s.X, s.Y, s.W, s.H}
+	return CollisionRect{s.X + mod/2, s.Y + mod, s.W - mod, (s.H - mod)}
 }

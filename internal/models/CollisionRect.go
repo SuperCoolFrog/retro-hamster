@@ -25,8 +25,8 @@ func (r CollisionRect) toVector4() [4]Vector {
 	corners := [4]Vector{
 		{r.X, r.Y},             // top-left
 		{r.X + r.W, r.Y},       // top-right
-		{r.X, r.Y + r.H},       // bottom-right
 		{r.X + r.W, r.Y + r.H}, // bottom-left
+		{r.X, r.Y + r.H},       // bottom-right
 	}
 
 	return corners
