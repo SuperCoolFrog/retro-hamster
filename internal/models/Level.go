@@ -273,7 +273,7 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		return boss
 	},
 	"3": func(index int) *Spawn {
-		mod := float64(assets.AnimationBossPhase1.InitialSprite.W / 4)
+		mod := float64(assets.AnimationBossPhase3.InitialSprite.W / 4)
 		wheelRadiusModified := WHEEL_RADIUS + mod
 		angle := float64(index+1) * SPAWN_SPACING / (wheelRadiusModified)
 		// angle -= math.Pi / 2 /* THis will translate to top as starting point */
@@ -284,8 +284,6 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		})
 		boss.Power = 100
 		boss.IsAlive = true
-		boss.LastActivation = time.Now()
-		boss.ActivationCoolDown = time.Second * 10
 		boss.OnCollision = func(ham *Hamster) {
 
 			if ham.X < boss.X {
@@ -301,6 +299,8 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 			BOSS_HAS_INIT = true
 			boss.StartingHealth = BOSS_HEALTH
 			boss.Health = BOSS_HEALTH
+			boss.LastActivation = time.Now()
+			boss.ActivationCoolDown = time.Second * 10
 		}
 
 		boss.OtherUpdate = func() {

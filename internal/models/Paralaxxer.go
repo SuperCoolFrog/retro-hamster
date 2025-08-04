@@ -41,11 +41,20 @@ func (p *Parallaxer) Update(direction DIRECTION) {
 		d.X += (d.PerTick * float64(direction))
 		d.p2.X += (d.PerTick * float64(direction))
 
-		if d.X < -d.W {
-			d.X = d.W
+		if d.X < -d.W && d.p2.X > d.X {
+			d.X = d.W + d.p2.X
 		}
-		if d.p2.X < -d.W {
-			d.p2.X = d.W
+
+		if d.X > d.W && d.p2.X > 0 {
+			d.X = d.p2.X - d.W
+		}
+
+		if d.p2.X < -d.W && d.X > d.p2.X {
+			d.p2.X = d.W + d.X
+		}
+
+		if d.p2.X > d.W && d.X > 0 {
+			d.p2.X = d.X - d.W
 		}
 	}
 }

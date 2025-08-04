@@ -104,7 +104,7 @@ var (
 	}
 	AnimationBossPhase3 = AssetAnimation{
 		TotalFrames:   1,
-		InitialSprite: Sprite_Boss_Phase_2,
+		InitialSprite: Sprite_Boss_Phase_3,
 		Direction:     ANIMATION_DIRECTION_NONE,
 	}
 )

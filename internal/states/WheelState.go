@@ -67,14 +67,14 @@ func (s *WheelState) Update() error {
 		s.ham.Direction = models.DIRECTION_LEFT
 		s.ham.IsRunning = true
 		s.ham.Blocked = models.DIRECTION_NONE
-		// s.parallaxer.Update(models.DIRECTION_RIGHT)
+		s.parallaxer.Update(models.DIRECTION_RIGHT)
 	} else if ebiten.IsKeyPressed(ebiten.KeyD) && s.ham.Blocked != models.DIRECTION_RIGHT {
 		// s.angle -= 2 * math.Pi / 180
 		s.angle -= .75 * math.Pi / 180
 		s.ham.Direction = models.DIRECTION_RIGHT
 		s.ham.IsRunning = true
 		s.ham.Blocked = models.DIRECTION_NONE
-		// s.parallaxer.Update(models.DIRECTION_LEFT)
+		s.parallaxer.Update(models.DIRECTION_LEFT)
 	} else {
 		s.ham.IsRunning = false
 	}
@@ -137,10 +137,8 @@ func (s *WheelState) updateSpawns(spawns []*models.Spawn) {
 }
 
 func (s *WheelState) Draw(screen *ebiten.Image) {
-	// s.parallaxer.Draw(screen)
 	/* Background */
-	bg := s.Game.ImageAssets[assets.AssetKey_Background_PNG]
-	models.DrawAssetSprite(bg.Image, screen, 0, 0, assets.Sprite_Background)
+	s.parallaxer.Draw(screen)
 
 	/* #region wheel */
 	wheelPng := s.Game.ImageAssets[assets.AssetKey_Wheel_PNG]
@@ -261,11 +259,14 @@ func (s *WheelState) loadLevel(levelIdx, roundIdx int) {
 	level := s.Levels[levelIdx]
 	roundSpawns := level.Rounds[roundIdx]
 
+	for _, spawn := range roundSpawns {
+		spawn.Init()
+	}
+
 	s.updateSpawns(roundSpawns)
 
 	for _, spawn := range roundSpawns {
 		spawn.SetHamsterRelativeOffset(s.ham.LogicalAngle)
-		spawn.Init()
 	}
 
 	s.Spawns = roundSpawns
