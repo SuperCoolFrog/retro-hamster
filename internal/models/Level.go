@@ -202,6 +202,10 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 				boss.LastActivation = time.Now()
 			}
 
+			if !boss.IsAlive {
+				return
+			}
+
 			if ham.X < boss.X {
 				ham.Blocked = DIRECTION_RIGHT
 			} else {
@@ -254,6 +258,10 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 				boss.LastActivation = time.Now()
 			}
 
+			if !boss.IsAlive {
+				return
+			}
+
 			if ham.X < boss.X {
 				ham.Blocked = DIRECTION_RIGHT
 			} else {
@@ -285,6 +293,9 @@ var SymbolToSpawnMap = map[string]LevelSpawnConstructor{
 		boss.Power = 100
 		boss.IsAlive = true
 		boss.OnCollision = func(ham *Hamster) {
+			if !boss.IsAlive {
+				return
+			}
 
 			if ham.X < boss.X {
 				ham.Blocked = DIRECTION_RIGHT

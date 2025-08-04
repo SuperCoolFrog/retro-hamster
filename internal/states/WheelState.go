@@ -54,9 +54,9 @@ func (s *WheelState) OnTransition() {
 
 	s.parallaxer = models.NewParallaxer()
 	s.parallaxer.AddDetails(0, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_1_PNG])
-	s.parallaxer.AddDetails(1, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_2_PNG])
-	s.parallaxer.AddDetails(2, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_3_PNG])
-	s.parallaxer.AddDetails(3, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_4_PNG])
+	s.parallaxer.AddDetails(.25, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_2_PNG])
+	s.parallaxer.AddDetails(.75, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_3_PNG])
+	s.parallaxer.AddDetails(1, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_4_PNG])
 }
 
 func (s *WheelState) Update() error {
@@ -252,6 +252,7 @@ func (s *WheelState) checkLevel() {
 
 	if canAdvance {
 		s.nextRoundOrLevel()
+		s.ham.Blocked = models.DIRECTION_NONE
 	}
 }
 
