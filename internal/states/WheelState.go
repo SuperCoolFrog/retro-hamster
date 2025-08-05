@@ -32,6 +32,8 @@ type WheelState struct {
 	CurrentLevel int
 	CurrentRound int
 
+	NumOfEnemies int
+
 	parallaxer *models.Parallaxer
 }
 
@@ -62,15 +64,15 @@ func (s *WheelState) OnTransition() {
 func (s *WheelState) Update() error {
 
 	if ebiten.IsKeyPressed(ebiten.KeyA) && s.ham.Blocked != models.DIRECTION_LEFT {
-		// s.angle += 2 * math.Pi / 180
 		s.angle += .75 * math.Pi / 180
+		// s.angle += (math.Max(s.ham.Momentum.Ratio(), .25) * .75) * math.Pi / 180
 		s.ham.Direction = models.DIRECTION_LEFT
 		s.ham.IsRunning = true
 		s.ham.Blocked = models.DIRECTION_NONE
 		s.parallaxer.Update(models.DIRECTION_RIGHT)
 	} else if ebiten.IsKeyPressed(ebiten.KeyD) && s.ham.Blocked != models.DIRECTION_RIGHT {
-		// s.angle -= 2 * math.Pi / 180
 		s.angle -= .75 * math.Pi / 180
+		// s.angle -= (math.Max(s.ham.Momentum.Ratio(), .25) * .75) * math.Pi / 180
 		s.ham.Direction = models.DIRECTION_RIGHT
 		s.ham.IsRunning = true
 		s.ham.Blocked = models.DIRECTION_NONE

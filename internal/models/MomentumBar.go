@@ -78,3 +78,7 @@ func (m *MomentumBar) Draw(screen *ebiten.Image) {
 
 	screen.DrawImage(m1Sub, m1Opts)
 }
+
+func (m *MomentumBar) Ratio() float64 {
+	return m.Current / m.Total
+}
