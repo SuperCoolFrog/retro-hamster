@@ -65,6 +65,7 @@ func (s *WheelState) OnTransition() {
 	s.parallaxer.AddDetails(1, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_4_PNG])
 
 	s.fader = models.NewFader(false, float64(s.Game.ScreenW), float64(s.Game.ScreenH))
+	s.Update()
 	s.fader.Start()
 }
 
