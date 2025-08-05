@@ -14,6 +14,8 @@ type StartState struct {
 	menu      []*models.GameAction
 	startItem *models.GameAction
 	exitItem  *models.GameAction
+
+	fader *models.Fader
 }
 
 func (s *StartState) OnTransition() {
@@ -44,9 +46,15 @@ func (s *StartState) OnTransition() {
 
 	s.Game.CURSOR_X = -1
 	s.Game.CURSOR_Y = -1
+
+	s.fader = models.NewFader(true, float64(s.Game.ScreenW), float64(s.Game.ScreenH))
 }
 
 func (s *StartState) Update() error {
+	s.fader.Update()
+	if s.fader.IsFading {
+		return nil
+	}
 
 	s.Game.OnMouseMoved(func(x, y int) {
 		s.startItem.Focused = s.startItem.Contains(float64(x), float64(y))
@@ -55,14 +63,14 @@ func (s *StartState) Update() error {
 
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		if s.startItem.Focused {
-			s.Game.ChangeState(&WheelState{
-				Game:         s.Game,
-				CurrentLevel: -1,
-				CurrentRound: -1,
-			})
-			// s.Game.ChangeState(&BossPhase1State{
-			// 	Game: s.Game,
-			// })
+			s.fader.OnFadeComplete = func() {
+				s.Game.ChangeState(&WheelState{
+					Game:         s.Game,
+					CurrentLevel: -1,
+					CurrentRound: -1,
+				})
+			}
+			s.fader.Start()
 			return nil
 		} else if s.exitItem.Focused {
 			s.Game.UTIL_EXIT = true
@@ -80,4 +88,6 @@ func (s *StartState) Draw(screen *ebiten.Image) {
 
 	models.DrawButton(s.Game, screen, s.startItem)
 	models.DrawButton(s.Game, screen, s.exitItem)
+
+	s.fader.Draw(screen)
 }

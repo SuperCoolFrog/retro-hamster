@@ -37,6 +37,8 @@ type WheelState struct {
 	NumOfEnemies int
 
 	parallaxer *models.Parallaxer
+
+	fader *models.Fader
 }
 
 func (s *WheelState) OnTransition() {
@@ -61,9 +63,16 @@ func (s *WheelState) OnTransition() {
 	s.parallaxer.AddDetails(.25, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_2_PNG])
 	s.parallaxer.AddDetails(.75, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_3_PNG])
 	s.parallaxer.AddDetails(1, 0, 0, float64(assets.Sprite_Background.W), float64(assets.Sprite_Background.H), assets.Sprite_Background, s.Game.ImageAssets[assets.AssetKey_Background_4_PNG])
+
+	s.fader = models.NewFader(false, float64(s.Game.ScreenW), float64(s.Game.ScreenH))
+	s.fader.Start()
 }
 
 func (s *WheelState) Update() error {
+	s.fader.Update()
+	if s.fader.IsFading {
+		return nil
+	}
 
 	if ebiten.IsKeyPressed(ebiten.KeyA) && s.ham.Blocked != models.DIRECTION_LEFT {
 		s.angle += .75 * math.Pi / 180
@@ -186,6 +195,8 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	lvlTextOpts.GeoM.Translate(float64(s.Game.ScreenH)/20, float64(s.Game.ScreenH)/20)
 
 	models.WriteToScene(fmt.Sprintf("Level: %d - %d", s.CurrentLevel+1, s.CurrentRound+1), float64(s.Game.ScreenH)/20, s.Game, screen, lvlTextOpts)
+
+	s.fader.Draw(screen)
 }
 
 func (s *WheelState) setupAllLevels() {
