@@ -52,7 +52,7 @@ func DrawButton(g *Game, screen *ebiten.Image, button *GameAction) {
 		DrawAssetSprite(ss.Image, screen, button.X, button.Y, assets.Sprite_Button)
 	}
 
-	if font, fontExists := g.FontAssets[assets.AssetKey_HIL_Font_TTF]; fontExists {
+	if font, fontExists := g.FontAssets[assets.AssetKey_Sunny_Font_TTF]; fontExists {
 		txtOps := &text.DrawOptions{}
 		txtOps.GeoM.Translate(float64(button.X)+float64(assets.Sprite_Button.W/2), float64(button.Y)+float64(assets.Sprite_Button.H)/3.5)
 		txtOps.ColorScale.ScaleWithColor(COLOR_PINK)
