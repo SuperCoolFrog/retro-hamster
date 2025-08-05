@@ -20,12 +20,7 @@ func init() {
 func main() {
 	ebiten.SetWindowSize(game.ScreenW, game.ScreenH)
 	ebiten.SetWindowTitle("Retro Hamster - The Big Wheel")
-
-	// game.ChangeState(&states.WheelState{
-	// 	Game:         game,
-	// 	CurrentLevel: -1,
-	// 	CurrentRound: -1,
-	// })
+	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 
 	game.ChangeState(&states.StartState{
 		Game: game,
