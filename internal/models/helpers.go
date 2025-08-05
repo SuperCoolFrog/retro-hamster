@@ -64,3 +64,14 @@ func DrawButton(g *Game, screen *ebiten.Image, button *GameAction) {
 	}
 
 }
+
+func WriteToScene(stringText string, size float64, g *Game, screen *ebiten.Image, opts *text.DrawOptions) {
+	if font, fontExists := g.FontAssets[assets.AssetKey_Sunny_Font_TTF]; fontExists {
+		txtOps := &text.DrawOptions{}
+		*txtOps = *opts
+		text.Draw(screen, stringText, &text.GoTextFace{
+			Source: font.Font,
+			Size:   size,
+		}, txtOps)
+	}
+}

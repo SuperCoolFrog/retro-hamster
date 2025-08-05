@@ -1,6 +1,7 @@
 package states
 
 import (
+	"fmt"
 	"math"
 	"retro-hamster/assets"
 	"retro-hamster/internal/levels"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/text/v2"
 )
 
 // const HAMSTER_DIRECTION_RIGHT = 1
@@ -179,6 +181,11 @@ func (s *WheelState) Draw(screen *ebiten.Image) {
 	for _, spawn := range s.Spawns {
 		spawn.Draw(s.Game, screen)
 	}
+
+	lvlTextOpts := &text.DrawOptions{}
+	lvlTextOpts.GeoM.Translate(float64(s.Game.ScreenH)/20, float64(s.Game.ScreenH)/20)
+
+	models.WriteToScene(fmt.Sprintf("Level: %d - %d", s.CurrentLevel+1, s.CurrentRound+1), float64(s.Game.ScreenH)/20, s.Game, screen, lvlTextOpts)
 }
 
 func (s *WheelState) setupAllLevels() {
